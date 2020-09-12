@@ -1,8 +1,16 @@
 """
 ADD YOUR ENTITY CLASSES HERE
 """
+from typing import List
 
 from .json_parser import JSONParser
+
+
+class Timeslot:
+    times = ["0830", "0930", "1030", "1130", "1230",
+             "1330", "1430", "1530", "1630", "1730",
+             "1830", "1930", "2030", "2130", "2230"]
+    time_to_slot = {times[i]: i for i in range(len(times) - 1)}
 
 
 class Day:
@@ -19,13 +27,6 @@ class LessonType:
     LEC = "LECTURE"
     TUT = "TUTORIAL"
     LAB = "LAB"
-
-
-class Timeslot:
-    times = ["0830", "0930", "1030", "1130", "1230",
-             "1330", "1430", "1530", "1630", "1730",
-             "1830", "1930", "2030", "2130", "2230"]
-    d = {i + 1: (times[i], times[i + 1]) for i in range(len(times) - 1)}
 
 
 class Lesson:
@@ -53,7 +54,8 @@ class Index:
 
 
 class Course:
-    def __init__(self, code, name, au):
+    def __init__(self, code: str, name: str, au: int, indexes: List[Index]):
         self.code = code
         self.name = name
         self.au = au
+        self.indexes = indexes
