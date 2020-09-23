@@ -14,5 +14,15 @@
 <!--RENDER YOUR PAGE CONTENT HERE-->
 <body>
 <h1 style="text-align: center;">TIMETABLE PAGE</h1>
+
+{% for key, value in d.items %}
+    <table>
+        <tr>
+            <td>
+                {{ value.name }}
+            </td>
+        </tr>
+    </table>
+{% endfor %}
 </body>
 </html>
