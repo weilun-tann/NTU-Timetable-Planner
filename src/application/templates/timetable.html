@@ -15,14 +15,18 @@
 <body>
 <h1 style="text-align: center;">TIMETABLE PAGE</h1>
 
-{% for key, value in d.items %}
-    <table>
+<table border="1">
+    {% for key, value in d.items %}
         <tr>
             <td>
-                {{ value.name }}
+                Name of course: {{ value.name }}
+            </td>
+            <td>
+                AU: {{ value.au }}
             </td>
         </tr>
-    </table>
-{% endfor %}
+    {% endfor %}
+</table>
+
 </body>
 </html>
