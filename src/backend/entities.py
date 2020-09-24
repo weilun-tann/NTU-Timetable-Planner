@@ -3,15 +3,6 @@ ADD YOUR ENTITY CLASSES HERE
 """
 from typing import List
 
-from .json_parser import JSONParser
-
-
-class Timeslot:
-    times = ["0830", "0930", "1030", "1130", "1230",
-             "1330", "1430", "1530", "1630", "1730",
-             "1830", "1930", "2030", "2130", "2230"]
-    time_to_slot = {times[i]: i for i in range(len(times) - 1)}
-
 
 class Day:
     MON = "MON"
@@ -48,9 +39,9 @@ class Lesson:
 
 
 class Index:
-    def __init__(self, index: str):
+    def __init__(self, index: str, lessons: List[Lesson]):
         self.index = index
-        self.lessons = JSONParser.get_lessons(self)
+        self.lessons = lessons
 
 
 class Course:
