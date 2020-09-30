@@ -1,7 +1,11 @@
+import sys
+
+sys.path.append("..")
+
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 
-from ..planner import Planner
+from backend.planner import Planner
 
 
 def login(request: HttpRequest) -> HttpResponse:
