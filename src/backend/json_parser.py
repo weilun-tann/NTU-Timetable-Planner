@@ -4,6 +4,7 @@ METHOD HERE TO GIVE YOU THE PROCESSED VERSION
 """
 
 import json
+import os
 from typing import List, Dict
 
 from backend.entities import Course, Lesson, Index
@@ -13,7 +14,7 @@ class JSONParser:
 
     @staticmethod
     def get_dict():
-        with open('data/2020_S1.json') as json_file:
+        with open('../backend/data/2020_S1.json') as json_file:
             return json.load(json_file)
 
     @staticmethod
