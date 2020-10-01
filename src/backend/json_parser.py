@@ -6,7 +6,7 @@ METHOD HERE TO GIVE YOU THE PROCESSED VERSION
 import json
 from typing import List, Dict
 
-from entities import Course, Lesson, Index
+from backend.entities import Course, Lesson, Index
 
 
 class JSONParser:
