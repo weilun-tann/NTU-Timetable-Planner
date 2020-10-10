@@ -6,7 +6,7 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 
 from backend.planner import Planner
-
+from .models import Student
 
 def login(request: HttpRequest) -> HttpResponse:
     """
@@ -21,7 +21,35 @@ def profile(request: HttpRequest) -> HttpResponse:
     :param request: To view the profile page
     :return: The profile page
     """
-    return render(request, 'profile.html', {})
+    user = request.POST['studentID']
+    password = request.POST['password']
+
+    s1 = Student()
+    s1.matric = "10157409"
+    s1.password = "123456"
+    s1.name = "Hamburglar"  
+    s1.study_yr = "2"
+    s1.course = "Computer Science"
+    s1.mods_cleared = "CZ1001","CZ1002"
+    s1.img = "https://cdn.dribbble.com/users/935504/screenshots/3123811/artboard.png"
+
+    s2 = Student()
+    s2.matric = "1922118"
+    s2.password = "123456"
+    s2.name = "Ronald MacDonald"
+    s2.study_yr = "3"
+    s2.course = "Computer Science"
+    s2.mods_cleared = "CZ2001","CZ2002"
+    s2.img = "https://cached.imagescaler.hbpl.co.uk/resize/scaleWidth/743/cached.offlinehbpl.hbpl.co.uk/news/OMC/C785C365-DB1F-ABBE-BEF5F76B8E2868E1.jpg"
+
+    students = [s1,s2]
+
+    for i in range (len(students)):
+        if user == students[i].matric and password == students[i].password:
+            s = students[i]
+            return render(request, 'profile.html', {"s" : s})
+
+    return render(request, 'login.html')
 
 
 def timetable(request: HttpRequest) -> HttpResponse:
