@@ -7,6 +7,7 @@ from django.shortcuts import render
 
 from backend.planner import Planner
 from .models import Student
+from src.backend.json_parser import JSONParser
 
 def login(request: HttpRequest) -> HttpResponse:
     """
@@ -70,5 +71,15 @@ def timetable(request: HttpRequest) -> HttpResponse:
     # return render(request, 'timetable.html', context)
 
     # @SUNNY, CHANGE THIS LINE TO GENERATE COMBIS FOR DIFFERENT COURSES YOU WANNA PLAN FOR
-    data = {"combinations": Planner.generate_combis(["CZ2001", "CZ2002", "CZ2003", "CZ2004", "CZ2005", "CZ2006"])}
+    list = request.GET.getlist('course')
+    data = {"combinations": Planner.generate_combis(list)}
     return render(request, 'timetable.html', data)
+
+
+def search(request: HttpRequest) -> HttpResponse:
+    """
+    :param request: To view the search page
+    :return: The search page
+    """
+    coursenames = ["CZ2001", "CZ2002", "CZ2003", "CZ2004", "CZ2005", "CZ2006"]
+    return render(request, 'search.html', {"coursenames": coursenames})
