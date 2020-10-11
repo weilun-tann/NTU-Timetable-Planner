@@ -9,3 +9,5 @@ class Student:
     course = str
     mods_cleared = str
     img = str
+
+
