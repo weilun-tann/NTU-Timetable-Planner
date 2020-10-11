@@ -9,6 +9,7 @@ from typing import List, Dict
 
 from backend.entities import Course, Lesson, Index
 
+
 class JSONParser:
 
     @staticmethod

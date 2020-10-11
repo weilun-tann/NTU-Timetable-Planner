@@ -8,6 +8,7 @@ from typing import List, Tuple, Dict, Deque
 from backend.entities import Course, Index
 from backend.json_parser import JSONParser
 
+
 class Planner:
     @staticmethod
     def generate_combis(course_indexes: List[str]) -> List[Dict[Course, Index]]:
