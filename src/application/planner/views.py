@@ -80,5 +80,6 @@ def search(request: HttpRequest) -> HttpResponse:
     :param request: To view the search page
     :return: The search page
     """
-    coursenames = ["CZ2001", "CZ2002", "CZ2003", "CZ2004", "CZ2005", "CZ2006"]
+    coursenames = JSONParser.get_course_names();
+    #coursenames = ["CZ2001", "CZ2002", "CZ2003", "CZ2004", "CZ2005", "CZ2006"]
     return render(request, 'search.html', {"coursenames": coursenames})
