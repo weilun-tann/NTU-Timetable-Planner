@@ -7,7 +7,7 @@ from django.shortcuts import render
 
 from backend.planner import Planner
 from .models import Student
-from src.backend.json_parser import JSONParser
+from backend.json_parser import JSONParser
 
 def login(request: HttpRequest) -> HttpResponse:
     """
