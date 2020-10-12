@@ -10,9 +10,10 @@
         <div class="container centerbutton">
             <form action={% url "timetable" %}>
                 <select multiple data-multi-select-plugin name="course" id = "courseselect" multiple>
-                    {% for names in coursenames %}
-                        <option value="{{ names }}">{{ names }}</option>
+                    {% for coursecode, coursename in coursecodes.items %}
+                        <option value="{{ coursecode }} {{ coursename }}"></option>
                     {% endfor %}
+
                     <input type="submit" value="Create Timetable">
                 </select>
             </form>
