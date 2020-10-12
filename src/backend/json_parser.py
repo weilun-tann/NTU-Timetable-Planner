@@ -52,7 +52,7 @@ class JSONParser:
     @staticmethod
     def get_course_names() -> List[str]:
         data = JSONParser.get_dict()
-        return [f"{k} {v['name']}" for k, v in data.items()]
+        return {k: v['name'] for k, v in data.items()}
 
     @staticmethod
     def get_lectures(data: Dict, index: Index) -> List[Lesson]:
