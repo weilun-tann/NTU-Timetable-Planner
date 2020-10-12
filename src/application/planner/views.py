@@ -72,6 +72,7 @@ def timetable(request: HttpRequest) -> HttpResponse:
 
     # @SUNNY, CHANGE THIS LINE TO GENERATE COMBIS FOR DIFFERENT COURSES YOU WANNA PLAN FOR
     list = request.GET.getlist('course')
+    list = [L.split()[0] for L in list]
     data = {"combinations": Planner.generate_combis(list)}
     return render(request, 'timetable.html', data)
 
@@ -80,6 +81,7 @@ def search(request: HttpRequest) -> HttpResponse:
     :param request: To view the search page
     :return: The search page
     """
-    coursenames = JSONParser.get_course_names();
+
+    coursecodes = JSONParser.get_course_names();
     #coursenames = ["CZ2001", "CZ2002", "CZ2003", "CZ2004", "CZ2005", "CZ2006"]
-    return render(request, 'search.html', {"coursenames": coursenames})
+    return render(request, 'search.html', {"coursecodes": coursecodes})
