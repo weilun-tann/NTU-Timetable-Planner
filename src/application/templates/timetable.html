@@ -68,6 +68,14 @@
 </style>
 </head>
 <body>
+    {% for combi in combinations %}
+        {% for course, index in combi.items %}
+            {{ course.code }}
+            {% for lesson in index.lessons %}
+                {{ lesson.t_end }}
+            {% endfor %}
+        {% endfor %}
+    {% endfor %}
   <div id='wrap'>
 
     <div id='calendar-wrap'>
