@@ -14,43 +14,73 @@
 </head>
 <script>
 
-    
-
   document.addEventListener('DOMContentLoaded', function() {
-
-
 
     /* initialize the calendar
     -----------------------------------------------------------------*/
+    var i = 1;
 
-    var calendarEl = document.getElementById('calendar');
-    var calendar = new FullCalendar.Calendar(calendarEl, {
-      headerToolbar: {
-        left: false,
-        center: false,
-    	right: false
-	  },
-	  allDaySlot: false,
-	  //nowIndicator: true,
-	  dayHeaderFormat: { weekday: 'long' },
-	  slotMinTime: '08:00',
-	  slotMaxTime: '19:00',
-	  slotDuration: '00:30',
-	  initialView: 'timeGridWeek',
-	  expandRows: true,
-	  weekends: false,
-      editable: true,
-      droppable: true, // this allows things to be dropped onto the calendar
-      drop: function(arg) {
-        // is the "remove after drop" checkbox checked?
-        if (document.getElementById('drop-remove').checked) {
-          // if so, remove the element from the "Draggable Events" list
-          arg.draggedEl.parentNode.removeChild(arg.draggedEl);
-        }
-      }
-    });
+    {% for combi in combinations %}
+        var cal = document.createElement("div");
+        cal.setAttribute("id", "calendar" + i);
+        var div2 = document.createElement("div");
+        div2.setAttribute("id", "innerCal" + i);
 
-    calendar.render();
+        var title = document.createElement("h1");
+        var titleText = document.createTextNode("Combination " + i);
+        title.appendChild(titleText);
+
+        cal.appendChild(title);
+        cal.appendChild(div2);
+        var parent = document.getElementById("calendar-wrap");
+        parent.appendChild(cal);
+
+        var calendarE1 = document.getElementById('innerCal' + i);
+        var calendar = new FullCalendar.Calendar(calendarE1, {
+          headerToolbar: {
+            left: false,
+            center: false,
+            right: false
+          },
+          events: [
+
+                  {% for course, index in combi.items %}
+                      {% for lesson in index.lessons %}
+                          {
+                              title: '{{ course.name }}',
+                              start: '{{ lesson.date }}T{{ lesson.t_start }}',
+                              end: '{{ lesson.date }}T{{ lesson.t_end }}',
+                              allDay: false
+                          },
+                      {% endfor %}
+                  {% endfor %}
+
+              {}
+          ],
+          allDaySlot: false,
+          //nowIndicator: true,
+          dayHeaderFormat: { weekday: 'long' },
+          slotMinTime: '08:00',
+          slotMaxTime: '19:00',
+          slotDuration: '00:30',
+          initialView: 'timeGridWeek',
+          expandRows: true,
+          weekends: false,
+          editable: false,
+          droppable: true, // this allows things to be dropped onto the calendar
+          drop: function(arg) {
+            // is the "remove after drop" checkbox checked?
+            if (document.getElementById('drop-remove').checked) {
+              // if so, remove the element from the "Draggable Events" list
+              arg.draggedEl.parentNode.removeChild(arg.draggedEl);
+            }
+          }
+        });
+        calendar.render();
+        i = i + 1;
+    {% endfor %}
+
+
   });
 
 
@@ -65,9 +95,10 @@
     font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
   }
 
-  /* #calendar-wrap {
-    margin-left: 200px;
-  } */
+  #calendar-wrap {
+    max-width: 1100px;
+      margin: 0 auto;
+  }
   #calendar {
     max-width: 1100px;
     margin: 0 auto;
@@ -76,21 +107,10 @@
 </style>
 </head>
 <body>
-{% for combi in combinations %}
-    {% for course, index in combi.items %}
-        {{ course.code }}
-        {% for lesson in index.lessons %}
-            {{ lesson.t_start }}
-            {{  lesson.t_end }}
-        {% endfor %}
-    {% endfor %}
-{% endfor %}
-
-
   <div id='wrap'>
 
     <div id='calendar-wrap'>
-      <div id='calendar'></div>
+
     </div>
 
   </div>
