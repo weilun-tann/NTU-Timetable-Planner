@@ -24,7 +24,7 @@ class Lesson:
 
     def __init__(self, index: str, ltype: LessonType, group: str,
                  day: str, t_full: str, t_start: str, t_end: str,
-                 duration: float, location: int, flag: int, remarks: str):
+                 duration: float, location: int, flag: int, remarks: str, date: str):
         self.index = index
         self.ltype = ltype
         self.group = group
@@ -36,6 +36,7 @@ class Lesson:
         self.location = location
         self.flag = flag
         self.remarks = remarks
+        self.date = date
 
 
 class Index:
