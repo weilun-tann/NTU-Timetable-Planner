@@ -58,7 +58,7 @@ class Planner:
     @staticmethod
     def get_intervals(combi: List[Index]) -> List[Tuple[str, int, int]]:
         return sorted(
-            [(lesson.day, int(lesson.t_start), int(lesson.t_end)) for index in combi for lesson in index.lessons])
+            [(lesson.day, str(lesson.t_start), str(lesson.t_end)) for index in combi for lesson in index.lessons])
 
     @staticmethod
     def clashes(intervals: List[Tuple[str, int, int]]) -> bool:
