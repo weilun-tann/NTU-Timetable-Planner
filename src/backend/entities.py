@@ -30,8 +30,8 @@ class Lesson:
         self.group = group
         self.day = day
         self.t_full = t_full
-        self.t_start = t_start
-        self.t_end = t_end
+        self.t_start = t_start[0:2] + ':' + t_start[2:4] + ':00'
+        self.t_end = t_end[0:2] + ':' + t_end[2:4] + ':00'
         self.duration = duration
         self.location = location
         self.flag = flag
