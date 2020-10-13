@@ -1,23 +1,23 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Search Courses</title>
-    <link rel="stylesheet" type="text/css" href="../static/css/search.css">
+    <link href="{% static 'css/search.css' %}" rel="stylesheet"/>
+    <script src="{% static 'js/search.js' %}"></script>
 </head>
 <body>
-    <h1 class = center>Select courses</h1>
-        <div class="container centerbutton">
+        <div class="container">
+            <h1>Select Courses</h1>
             <form action={% url "timetable" %}>
-                <select multiple data-multi-select-plugin name="course" id = "courseselect" multiple>
+                <select data-multi-select-plugin name="course" id = "courseselect" multiple>
                     {% for coursecode, coursename in coursecodes.items %}
                         <option value="{{ coursecode }} {{ coursename }}"></option>
                     {% endfor %}
-
-                    <input type="submit" value="Create Timetable">
+                    <input type="submit" value="Create Timetable" class="btn btn-primary btn-block btn-large">
                 </select>
             </form>
         </div>
 </body>
-<script src="../static/js/search.js"></script>
 </html>

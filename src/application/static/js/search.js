@@ -46,7 +46,7 @@ function addPlaceholder(wrapper) {
     const input_search = wrapper.querySelector(".selected-input");
     const tokens = wrapper.querySelectorAll(".selected-wrapper");
     if (!tokens.length && !(document.activeElement === input_search))
-        input_search.setAttribute("placeholder", "---------");
+        input_search.setAttribute("placeholder", "");
 }
 
 
