@@ -14,11 +14,13 @@
 </head>
 <script>
 
+
   document.addEventListener('DOMContentLoaded', function() {
 
     /* initialize the calendar
     -----------------------------------------------------------------*/
     var i = 1;
+    var currentCal = 1;
 
     {% for combi in combinations %}
         var cal = document.createElement("div");
@@ -37,10 +39,30 @@
 
         var calendarE1 = document.getElementById('innerCal' + i);
         var calendar = new FullCalendar.Calendar(calendarE1, {
+
+        customButtons: {
+            myPrevButton: {
+              text: 'Prev',
+              click: function() {
+                document.getElementById("calendar" + currentCal).style.display = "none";
+                currentCal--;
+                document.getElementById("calendar" + currentCal).style.display = "block";
+              }
+            },
+            myNextButton: {
+              text: 'Next',
+              click: function() {
+                document.getElementById("calendar" + currentCal).style.display = "none";
+                currentCal++;
+                document.getElementById("calendar" + currentCal).style.display = "block";
+              }
+            }
+          },
           headerToolbar: {
             left: false,
             center: false,
-            right: false
+            right: 'myPrevButton,myNextButton'
+
           },
           events: [
 
@@ -74,16 +96,15 @@
               // if so, remove the element from the "Draggable Events" list
               arg.draggedEl.parentNode.removeChild(arg.draggedEl);
             }
-          }
+          },
         });
         calendar.render();
+        if (i != 1) {
+            document.getElementById("calendar" + i).style.display = "none";
+        }
         i = i + 1;
     {% endfor %}
-
-
   });
-
-
 
 
 </script>
