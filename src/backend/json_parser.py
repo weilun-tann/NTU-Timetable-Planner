@@ -57,7 +57,7 @@ class JSONParser:
 
     @staticmethod
     def get_date(details: Dict) -> str:
-        curr_day = datetime.today().weekday()  # MON = 0, SUN = 6
+        curr_day = datetime.today().weekday()  # 0 - MON, 6 - SUN
         curr_date = datetime.today()
         day_date = JSONParser.get_date_date_map(curr_day, curr_date)
         return day_date[details["day"]]
@@ -92,7 +92,3 @@ class JSONParser:
     @staticmethod
     def get_labs(data: Dict, index: Index) -> List[Lesson]:
         pass
-
-
-if __name__ == "__main__":
-    print(JSONParser.get_date({"day": "SUN"}))
