@@ -10,128 +10,166 @@
     <script src="{% static 'js/timetable.js' %}"></script>
     <script src='{% static "js/jquery-3.5.1.min.js" %}'></script>
 </head>
+
+{# TODO : MOVE THIS INTO TIMETABLE.JS#}
 <script>
-
-
-  document.addEventListener('DOMContentLoaded', function() {
-
-    /* initialize the calendar
-    -----------------------------------------------------------------*/
-    var i = 1;
-    var currentCal = 1;
-
-    {% for combi in combinations %}
-        var cal = document.createElement("div");
-        cal.setAttribute("id", "calendar" + i);
-        var div2 = document.createElement("div");
-        div2.setAttribute("id", "innerCal" + i);
-
-        var title = document.createElement("h1");
-        var titleText = document.createTextNode("Combination " + i);
-        title.appendChild(titleText);
-
-        cal.appendChild(title);
-        cal.appendChild(div2);
-        var parent = document.getElementById("calendar-wrap");
-        parent.appendChild(cal);
-
-        var calendarE1 = document.getElementById('innerCal' + i);
-        var calendar = new FullCalendar.Calendar(calendarE1, {
-
-        customButtons: {
-            myPrevButton: {
-              text: 'Prev',
-              click: function() {
-                document.getElementById("calendar" + currentCal).style.display = "none";
-                currentCal--;
-                document.getElementById("calendar" + currentCal).style.display = "block";
-              }
-            },
-            myNextButton: {
-              text: 'Next',
-              click: function() {
-                document.getElementById("calendar" + currentCal).style.display = "none";
-                currentCal++;
-                document.getElementById("calendar" + currentCal).style.display = "block";
-              }
-            }
-          },
-          headerToolbar: {
-            left: false,
-            center: false,
-            right: 'myPrevButton,myNextButton'
-
-          },
-          events: [
-
-                  {% for course, index in combi.items %}
-                      {% for lesson in index.lessons %}
-                          {
-                              title: '{{ course.name }}',
-                              start: '{{ lesson.date }}T{{ lesson.t_start }}',
-                              end: '{{ lesson.date }}T{{ lesson.t_end }}',
-                              allDay: false
-                          },
-                      {% endfor %}
-                  {% endfor %}
-
-              {}
-          ],
-          allDaySlot: false,
-          //nowIndicator: true,
-          dayHeaderFormat: { weekday: 'long' },
-          slotMinTime: '08:00',
-          slotMaxTime: '19:00',
-          slotDuration: '00:30',
-          initialView: 'timeGridWeek',
-          expandRows: true,
-          weekends: false,
-          editable: false,
-          droppable: true, // this allows things to be dropped onto the calendar
-          drop: function(arg) {
-            // is the "remove after drop" checkbox checked?
-            if (document.getElementById('drop-remove').checked) {
-              // if so, remove the element from the "Draggable Events" list
-              arg.draggedEl.parentNode.removeChild(arg.draggedEl);
-            }
-          },
-        });
-        calendar.render();
-        if (i != 1) {
-            document.getElementById("calendar" + i).style.display = "none";
+    document.addEventListener('DOMContentLoaded', function () {
+        function getAlternateIndexes(clickedIndex, combi) {
+            $.ajax({
+                type: "POST",
+                url: "alt_indexes/",
+                data: {
+                    "clickedIndex": clickedIndex,
+                    "combi": JSON.stringify(combi),
+                    "csrfmiddlewaretoken": "{{ csrf_token }}"
+                },
+                success: getAlternateIndexesOnSuccess,
+            })
         }
-        i = i + 1;
-    {% endfor %}
-  });
 
+        function getAlternateIndexesOnSuccess(data) {
+            const alt_indexes = JSON.parse(data["alt_indexes"]);
+            if (alt_indexes.length == 0) {
+                console.log("NO ALTERNATIVES");
+            }
+            for (let alt of alt_indexes) {
+                console.log(alt.index);
+            }
+        }
 
+        /* initialize the calendar
+        -----------------------------------------------------------------*/
+        var i = 1;
+        var currentCal = 1;
+
+        {% for combi in combinations %}
+            var combiObj = {};
+            {% for course, idx in combi.items %}
+                {% for lesson in idx.lessons %}
+                    combiObj['{{ course.code }}'] = '{{ lesson.index }}';
+                {% endfor %}
+            {%endfor%}
+            var cal = document.createElement("div");
+            cal.setAttribute("id", "calendar" + i);
+            var div2 = document.createElement("div");
+            div2.setAttribute("id", "innerCal" + i);
+
+            var title = document.createElement("h1");
+            var titleText = document.createTextNode("Combination " + i);
+            title.appendChild(titleText);
+
+            cal.appendChild(title);
+            cal.appendChild(div2);
+            var parent = document.getElementById("calendar-wrap");
+            parent.appendChild(cal);
+
+            var calendarE1 = document.getElementById('innerCal' + i);
+            var calendar = new FullCalendar.Calendar(calendarE1, {
+                eventClick: function (info) {
+                    getAlternateIndexes(info.event.extendedProps.index,
+                        info.event.extendedProps.combiObj)
+                },
+                customButtons: {
+                    myPrevButton: {
+                        text: 'Prev',
+                        click: function () {
+                            document.getElementById("calendar" + currentCal).style.display = "none";
+                            currentCal--;
+                            document.getElementById("calendar" + currentCal).style.display = "block";
+                        }
+                    },
+                    myNextButton: {
+                        text: 'Next',
+                        click: function () {
+                            document.getElementById("calendar" + currentCal).style.display = "none";
+                            currentCal++;
+                            document.getElementById("calendar" + currentCal).style.display = "block";
+                        }
+                    }
+                },
+                headerToolbar: {
+                    left: false,
+                    center: false,
+                    right: 'myPrevButton,myNextButton'
+
+                },
+                events: [
+
+                    {% for course, index in combi.items %}
+                        {% for lesson in index.lessons %}
+                            {
+                                title: '{{ course.name }}',
+                                start: '{{ lesson.date }}T{{ lesson.t_start }}',
+                                end: '{{ lesson.date }}T{{ lesson.t_end }}',
+                                allDay: false,
+                                extendedProps: {index: '{{ lesson.index }}', combiObj: combiObj},
+                            },
+                        {% endfor %}
+                    {% endfor %}
+
+                    {}
+                ],
+                allDaySlot: false,
+                //nowIndicator: true,
+                dayHeaderFormat: {weekday: 'long'},
+                slotMinTime: '08:00',
+                slotMaxTime: '19:00',
+                slotDuration: '00:30',
+                initialView: 'timeGridWeek',
+                expandRows: true,
+                weekends: false,
+                editable: false,
+                droppable: true, // this allows things to be dropped onto the calendar
+                drop: function (arg) {
+                    // is the "remove after drop" checkbox checked?
+                    if (document.getElementById('drop-remove').checked) {
+                        // if so, remove the element from the "Draggable Events" list
+                        arg.draggedEl.parentNode.removeChild(arg.draggedEl);
+                    }
+                },
+            });
+            calendar.render();
+            if (i !== 1) {
+                document.getElementById("calendar" + i).style.display = "none";
+            }
+            i = i + 1;
+        {% endfor %}
+    })
+    ;
+
+    const [entry] = performance.getEntriesByType("navigation");
+    if (entry["type"] === "back_forward") {
+        location.reload();
+    }
 </script>
+
+{# TODO - MOVE THIS INTO TIMETABLE.CSS#}
 <style>
 
-  body {
-    margin-top: 40px;
-    font-size: 14px;
-    font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
-  }
+    body {
+        margin-top: 40px;
+        font-size: 14px;
+        font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+    }
 
-  #calendar-wrap {
-    max-width: 1100px;
-      margin: 0 auto;
-  }
-  #calendar {
-    max-width: 1100px;
-    margin: 0 auto;
-  }
+    #calendar-wrap {
+        max-width: 1100px;
+        margin: 0 auto;
+    }
+
+    #calendar {
+        max-width: 1100px;
+        margin: 0 auto;
+    }
 
 </style>
-</head>
 <body>
-  <div id='wrap'>
+<div id='wrap'>
 
     <div id='calendar-wrap'>
 
     </div>
 
-  </div>
+</div>
 </body>
 </html>
