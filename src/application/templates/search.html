@@ -7,6 +7,14 @@
     <link href="{% static 'css/search.css' %}" rel="stylesheet"/>
     <script src="{% static 'js/search.js' %}"></script>
 </head>
+
+<script type="text/javascript">
+  const [entry] = performance.getEntriesByType("navigation");
+    if (entry["type"] === "back_forward"){
+        location.reload();
+    }
+</script>
+
 <body>
         <div class="container">
             <h1>Select Courses</h1>
