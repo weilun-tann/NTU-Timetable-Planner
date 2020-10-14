@@ -19,28 +19,28 @@ class JSONParser:
             return json.load(json_file)
 
     @staticmethod
-    def get_courses(data: Dict, course_codes: List[str]) -> List[Course]:
+    def get_courses(course_codes: List[str]) -> List[Course]:
         courses = []
         for code in course_codes:
-            course = data[code]
+            course = DATA[code]
             name = course["name"]
             au = course["au"]
-            indexes = JSONParser.get_indexes(data, code)
+            indexes = JSONParser.get_indexes(code)
             courses.append(Course(code, name, au, indexes))
         return courses
 
     @staticmethod
-    def get_indexes(data: Dict, course_code: str) -> List[Index]:
+    def get_indexes(course_code: str) -> List[Index]:
         indexes = []
-        for index in data[course_code]["index"]:
-            lessons = JSONParser.get_lessons(data, course_code, index["index_number"])
-            indexes.append(Index(index, lessons))
+        for index in DATA[course_code]["index"]:
+            lessons = JSONParser.get_lessons(course_code, index["index_number"])
+            indexes.append(Index(index["index_number"], lessons))
         return indexes
 
     @staticmethod
-    def get_lessons(data: Dict, course_code: str, index: str) -> List[Lesson]:
+    def get_lessons(course_code: str, index: str) -> List[Lesson]:
         lessons = []
-        for ind in data[course_code]["index"]:
+        for ind in DATA[course_code]["index"]:
             if ind["index_number"] == index:
                 for det in ind["details"]:
                     lessons.append(Lesson(index, det["type"], det["group"],
@@ -52,18 +52,17 @@ class JSONParser:
 
     @staticmethod
     def get_course_names() -> List[str]:
-        data = JSONParser.get_dict()
-        return {k: v['name'] for k, v in data.items()}
+        return {k: v['name'] for k, v in DATA.items()}
 
     @staticmethod
     def get_date(details: Dict) -> str:
         curr_day = datetime.today().weekday()  # 0 - MON, 6 - SUN
         curr_date = datetime.today()
-        day_date = JSONParser.get_date_date_map(curr_day, curr_date)
+        day_date = JSONParser.get_day_date_map(curr_day, curr_date)
         return day_date[details["day"]]
 
     @staticmethod
-    def get_date_date_map(curr_day: int, curr_date: datetime) -> str:
+    def get_day_date_map(curr_day: int, curr_date: datetime) -> Dict[str, str]:
         day_date = dict()
         day_map = {0: "MON", 1: "TUE", 2: "WED", 3: "THU", 4: "FRI", 5: "SAT", 6: "SUN"}
 
@@ -81,14 +80,5 @@ class JSONParser:
     def datetime_to_ymd(dt: datetime) -> str:
         return dt.strftime('%Y-%m-%d')
 
-    @staticmethod
-    def get_lectures(data: Dict, index: Index) -> List[Lesson]:
-        pass
 
-    @staticmethod
-    def get_tutorials(data: Dict, index: Index) -> List[Lesson]:
-        pass
-
-    @staticmethod
-    def get_labs(data: Dict, index: Index) -> List[Lesson]:
-        pass
+DATA = JSONParser.get_dict()

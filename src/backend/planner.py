@@ -12,19 +12,9 @@ from backend.json_parser import JSONParser
 class Planner:
     @staticmethod
     def generate_combis(course_indexes: List[str]) -> List[Dict[Course, Index]]:
-        data = JSONParser.get_dict()
-        courses = JSONParser.get_courses(data, sorted(course_indexes))
+        courses = JSONParser.get_courses(sorted(course_indexes))
         combis = []
         Planner.backtrack(len(courses), deque(courses), dict(), combis)
-
-        print("\nSOLUTION")
-        for combi in combis:
-            print(f"Solution {combis.index(combi)}")
-            for c, i in sorted(combi.items(), key=lambda c: c[0].code):
-                print(f"{c.code}, {i.index['index_number']}")
-            print()
-
-        print(f"Combinations found : {len(combis)}")
         return combis
 
     @staticmethod
@@ -42,7 +32,6 @@ class Planner:
         res = False
 
         for index in course.indexes:
-            # pprint(f"Index : {vars(index)}")
             combi[course] = index
             res = Planner.backtrack(num_courses, courses, combi, combis)
             if not res: del combi[course]
@@ -63,12 +52,26 @@ class Planner:
     @staticmethod
     def clashes(intervals: List[Tuple[str, int, int]]) -> bool:
         for i in range(1, len(intervals)):
-            # CHECK IF SAME DAY FIRST
-            if intervals[i - 1][0] == intervals[i][0]:
+            if intervals[i - 1][0] == intervals[i][0]:  # CHECK IF SAME DAY FIRST
                 last_end, curr_start = intervals[i - 1][2], intervals[i][1]
                 if last_end > curr_start:
                     return True
         return False
+
+    @staticmethod
+    def get_alt_indexes(clicked_index: str, combi: Dict[str, str]) -> List[Index]:
+        # TODO : FILL IN LOGIC HERE
+        print(f"CLICKED : {clicked_index} | COMBI : {combi}")
+        course_code = [k for k, v in combi.items() if v == clicked_index][0]
+        combi = {k: [i for i in JSONParser.get_indexes(k) if i.index == v][0] for k, v in combi.items() if
+                 v != clicked_index}
+        print(f"NEW COMBI : {combi}")
+        indexes = JSONParser.get_indexes(course_code)
+        print(f"ALL INDEXES : {[i.index for i in indexes]}")
+        filtered_indexes = [i for i in indexes if
+                            Planner.valid({**combi, **{course_code: i}}) and i.index != clicked_index]
+        print(f"FILTERED INDEXES : {[i.index for i in filtered_indexes]}")
+        return filtered_indexes
 
 
 if __name__ == "__main__":
