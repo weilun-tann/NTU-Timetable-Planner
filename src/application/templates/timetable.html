@@ -14,6 +14,11 @@
 {# TODO : MOVE THIS INTO TIMETABLE.JS#}
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+        /**
+         * Sends a POST request to our API endpoint with the following URL parameters
+         * @param {String} clickedIndex The index of the lesson that was clicked
+         * @param {Object} combi A key-value map of {'Course_Index' : 'Index_Number'} - eg  {'CZ2001': '10184', 'CZ2002': '10203}
+         */
         function getAlternateIndexes(clickedIndex, combi) {
             $.ajax({
                 type: "POST",
@@ -27,14 +32,17 @@
             })
         }
 
+        /**
+         * Handler for a successful POST request in getAlternateIndexes(...)
+         * @param {Object} data The response returned from the API endpoint (ie. JS-equivalent of a Django context dict)
+         */
         function getAlternateIndexesOnSuccess(data) {
             const alt_indexes = JSON.parse(data["alt_indexes"]);
-            if (alt_indexes.length == 0) {
-                console.log("NO ALTERNATIVES");
-            }
-            for (let alt of alt_indexes) {
-                console.log(alt.index);
-            }
+            if (alt_indexes.length === 0) console.log("NO ALTERNATIVES");
+            for (let alt of alt_indexes) console.log(alt.index);
+
+            // TODO - @TIMETABLE TEAM - FROM HERE, YOU GUYS HAVE A LIST[INDEX OBJECT] STORED IN alt_indexes
+            // TODO - REFER TO backend/entities.py/Index class FOR ALL ATTRIBUTES YOU MIGHT NEED
         }
 
         /* initialize the calendar
