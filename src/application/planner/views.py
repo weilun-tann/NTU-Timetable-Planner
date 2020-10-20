@@ -61,7 +61,10 @@ def timetable(request: HttpRequest) -> HttpResponse:
     :return: The timetable page
     """
     course_indexes = [L.split()[0] for L in request.GET.getlist('course')]
-    return render(request, 'timetable.html', {"combinations": Planner.generate_combis(course_indexes)})
+    combinations = Planner.generate_combis(course_indexes)
+    #print(Planner.serialise(combinations))
+    #combinations = Planner.serialise(combinations)
+    return render(request, 'timetable.html', {"combinations": combinations})
 
 
 def alt_indexes(request: HttpRequest) -> HttpResponse:

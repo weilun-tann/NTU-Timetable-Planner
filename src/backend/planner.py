@@ -73,6 +73,22 @@ class Planner:
         print(f"FILTERED INDEXES : {[i.index for i in filtered_indexes]}")
         return filtered_indexes
 
+    @staticmethod
+    def serialise(combinations):
+        serialise = []
+        i = 0
+        for combination in combinations:
+            serialise.append({})
+            for course in combination:
+                serialise[i][course.name] = []
+                j = 0
+                for index in course.indexes:
+                    serialise[i][course.name].append({index.index : []})
+                    for lessons in index.lessons:
+                        serialise[i][course.name][j][index.index].append({"date" : lessons.date, "t_start" : lessons.t_start, "t_end" : lessons.t_end, "ltype" : lessons.ltype})
+                    j += 1
+            i += 1
+        return serialise
 
 if __name__ == "__main__":
     Planner.generate_combis(["CZ2001", "CZ2002", "CZ2003", "CZ2004", "CZ2005", "CZ2006"])
