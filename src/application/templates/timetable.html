@@ -49,9 +49,11 @@
         -----------------------------------------------------------------*/
         var i = 1;
         var currentCal = 1;
+        var totalcombinations = 0;
 
         {% for combi in combinations %}
             var combiObj = {};
+            totalcombinations += 1;
             {% for course, idx in combi.items %}
                 {% for lesson in idx.lessons %}
                     combiObj['{{ course.code }}'] = '{{ lesson.index }}';
@@ -81,17 +83,21 @@
                     myPrevButton: {
                         text: 'Prev',
                         click: function () {
-                            document.getElementById("calendar" + currentCal).style.display = "none";
-                            currentCal--;
-                            document.getElementById("calendar" + currentCal).style.display = "block";
+                            if(currentCal - 1 > 0) {
+                                document.getElementById("calendar" + currentCal).style.display = "none";
+                                currentCal--;
+                                document.getElementById("calendar" + currentCal).style.display = "block";
+                            }
                         }
                     },
                     myNextButton: {
                         text: 'Next',
                         click: function () {
-                            document.getElementById("calendar" + currentCal).style.display = "none";
-                            currentCal++;
-                            document.getElementById("calendar" + currentCal).style.display = "block";
+                            if(currentCal + 1 <= totalcombinations) {
+                                document.getElementById("calendar" + currentCal).style.display = "none";
+                                currentCal++;
+                                document.getElementById("calendar" + currentCal).style.display = "block";
+                            }
                         }
                     }
                 },
@@ -102,7 +108,6 @@
 
                 },
                 events: [
-
                     {% for course, index in combi.items %}
                         {% for lesson in index.lessons %}
                             {
@@ -170,6 +175,10 @@
         margin: 0 auto;
     }
 
+    .fc-day-today
+    {
+      background-color:inherit !important;
+    }
 </style>
 <body>
 <div id='wrap'>
