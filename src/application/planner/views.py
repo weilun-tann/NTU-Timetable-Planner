@@ -8,10 +8,14 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
+from backend.cache import TimetableCombinationsCache
 from backend.planner import Planner
 from .models import Student
 from backend.json_parser import JSONParser
 from backend.entities import CustomJSONEncoder
+
+# TO CACHE PREVIOUSLY QUERIED COMBINATIONS
+timetable_cache = TimetableCombinationsCache()
 
 
 def loginUser(request: HttpRequest) -> HttpResponse:
@@ -39,6 +43,7 @@ def logoutUser(request):
     logout(request)
     return redirect('home')
 
+
 @login_required(login_url='home')
 def profile(request: HttpRequest) -> HttpResponse:
     """
@@ -56,6 +61,7 @@ def profile(request: HttpRequest) -> HttpResponse:
 
     return render(request, 'profile.html', {"s": s1})
 
+
 @login_required(login_url='home')
 def timetable(request: HttpRequest) -> HttpResponse:
     """
@@ -63,10 +69,10 @@ def timetable(request: HttpRequest) -> HttpResponse:
     :return: The timetable page
     """
     course_indexes = [L.split()[0] for L in request.GET.getlist('course')]
-    combinations = Planner.generate_combis(course_indexes)
-    #print(Planner.serialise(combinations))
-    #combinations = Planner.serialise(combinations)
+    combinations = timetable_cache.get(course_indexes) or Planner.generate_combis(course_indexes)
+    timetable_cache.set(course_indexes, combinations)
     return render(request, 'timetable.html', {"combinations": combinations})
+
 
 @login_required(login_url='home')
 def alt_indexes(request: HttpRequest) -> HttpResponse:
@@ -74,6 +80,7 @@ def alt_indexes(request: HttpRequest) -> HttpResponse:
     combi = json.loads(request.POST["combi"])
     alt_idxes = Planner.get_alt_indexes(clicked_index, combi)
     return JsonResponse({'alt_indexes': json.dumps(alt_idxes, cls=CustomJSONEncoder)})
+
 
 @login_required(login_url='home')
 def search(request: HttpRequest) -> HttpResponse:

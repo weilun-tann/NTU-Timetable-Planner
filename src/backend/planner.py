@@ -61,16 +61,12 @@ class Planner:
     @staticmethod
     def get_alt_indexes(clicked_index: str, combi: Dict[str, str]) -> List[Index]:
         # TODO : FILL IN LOGIC HERE
-        print(f"CLICKED : {clicked_index} | COMBI : {combi}")
         course_code = [k for k, v in combi.items() if v == clicked_index][0]
         combi = {k: [i for i in JSONParser.get_indexes(k) if i.index == v][0] for k, v in combi.items() if
                  v != clicked_index}
-        print(f"NEW COMBI : {combi}")
         indexes = JSONParser.get_indexes(course_code)
-        print(f"ALL INDEXES : {[i.index for i in indexes]}")
         filtered_indexes = [i for i in indexes if
                             Planner.valid({**combi, **{course_code: i}}) and i.index != clicked_index]
-        print(f"FILTERED INDEXES : {[i.index for i in filtered_indexes]}")
         return filtered_indexes
 
     @staticmethod
@@ -83,12 +79,15 @@ class Planner:
                 serialise[i][course.name] = []
                 j = 0
                 for index in course.indexes:
-                    serialise[i][course.name].append({index.index : []})
+                    serialise[i][course.name].append({index.index: []})
                     for lessons in index.lessons:
-                        serialise[i][course.name][j][index.index].append({"date" : lessons.date, "t_start" : lessons.t_start, "t_end" : lessons.t_end, "ltype" : lessons.ltype})
+                        serialise[i][course.name][j][index.index].append(
+                            {"date": lessons.date, "t_start": lessons.t_start, "t_end": lessons.t_end,
+                             "ltype": lessons.ltype})
                     j += 1
             i += 1
         return serialise
+
 
 if __name__ == "__main__":
     Planner.generate_combis(["CZ2001", "CZ2002", "CZ2003", "CZ2004", "CZ2005", "CZ2006"])
