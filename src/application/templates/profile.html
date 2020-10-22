@@ -13,6 +13,7 @@
 
 <!--RENDER YOUR PAGE CONTENT HERE-->
 <body>
+    {% include 'navbar.html' %}
     <br><br><br><br><br><br><br><br><br><br><br>
     <div id="photo"><img src= "{{s.img}}" ></div>
     <table>
@@ -20,7 +21,7 @@
         <tr><td>Name:</td><td>{{s.name}}</td></tr>
         <tr><td>Study Yr:</td><td>{{s.study_yr}}</td></tr>
         <tr><td>Course:</td><td>{{s.course}}</td></tr>
-        <tr><td>Module Passed:</td><td>{{s.mods_cleared}}</td></tr>    
+        <tr><td>Module Passed:</td><td>{% for mods in s.mods_cleared %} {{mods}} {% endfor%}</td></tr>
     </table>
 </body>
 </html>

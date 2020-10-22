@@ -15,12 +15,15 @@
 <body>
     <div class="login">
       <h1>Digist Timetable Planner</h1>
-        <form action='/search/' method="post">
+        <form action='' method='POST'>
           {% csrf_token %}
-          <input type="text" name="studentID" placeholder="Username" required="required" />
+            <input type="text" name="studentID" placeholder="Username" required="required" />
             <input type="password" name="password" placeholder="Password" required="required" />
             <button type="submit" class="btn btn-primary btn-block btn-large">Login</button>
         </form>
+        {% for message in messages %}
+        <p id='messages'>{{message}}</p>
+        {% endfor %}
     </div>
 </body>
 </html>
