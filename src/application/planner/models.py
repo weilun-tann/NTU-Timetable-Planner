@@ -1,10 +1,6 @@
 from django.db import models
-
+from django.contrib.auth.models import AbstractUser
 # Create your models here.
-class Student:
-    matric = str
-    name = str
-    study_yr = str
-    course = str
-    mods_cleared = str
-    img = str
+
+class Student(AbstractUser):
+    courses_cleared = models.CharField(max_length=255, blank=True)

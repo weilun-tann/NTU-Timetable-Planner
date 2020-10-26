@@ -17,8 +17,8 @@
       <h1>Digist Timetable Planner</h1>
         <form action='' method='POST'>
           {% csrf_token %}
-            <input type="text" name="studentID" placeholder="Username" required="required" />
-            <input type="password" name="password" placeholder="Password" required="required" />
+            {{ forms.username }}
+            {{ forms.password }}
             <button type="submit" class="btn btn-primary btn-block btn-large">Login</button>
         </form>
         {% for message in messages %}

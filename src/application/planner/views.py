@@ -13,6 +13,7 @@ from backend.planner import Planner
 from .models import Student
 from backend.json_parser import JSONParser
 from backend.entities import CustomJSONEncoder
+from .forms import UserLogIn
 
 # TO CACHE PREVIOUSLY QUERIED COMBINATIONS
 timetable_cache = TimetableCombinationsCache()
@@ -25,7 +26,7 @@ def loginUser(request: HttpRequest) -> HttpResponse:
     """
 
     if request.method == 'POST':
-        username = request.POST.get('studentID')
+        username = request.POST.get('username')
         password = request.POST.get('password')
 
         user = authenticate(request, username=username, password=password)
@@ -35,8 +36,8 @@ def loginUser(request: HttpRequest) -> HttpResponse:
             return redirect('profile')
         else:
             messages.info(request, 'Username/Password incorrect')
-
-    return render(request, 'login.html')
+    form = UserLogIn
+    return render(request, 'login.html', {'forms' : form })
 
 
 def logoutUser(request):

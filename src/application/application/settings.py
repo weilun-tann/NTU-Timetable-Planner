@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'planner.apps.PlannerConfig',
 ]
 
 MIDDLEWARE = [
@@ -124,3 +125,5 @@ STATICFILES_DIRS = [
 
 # REFERS TO DJANGO'S OWN FOLDER WHEN IT COLLECTS ALL STATIC FILES
 STATIC_ROOT = os.path.join(BASE_DIR, 'assets')
+
+AUTH_USER_MODEL = 'planner.Student'
