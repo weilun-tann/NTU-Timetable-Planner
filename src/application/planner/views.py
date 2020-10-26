@@ -60,8 +60,9 @@ def profile(request: HttpRequest) -> HttpResponse:
     # s1.mods_cleared = "CZ1011", "CZ1012", "CZ1007", "MH1812"
     # s1.img = "https://cdn.dribbble.com/users/935504/screenshots/3123811/artboard.png"
 
+    coursecodes = JSONParser.get_course_names()
     user = request.user
-    return render(request, 'profile.html', {"user": user})
+    return render(request, 'profile.html', {"user": user, "coursecodes" : coursecodes})
 
 
 @login_required(login_url='home')
@@ -70,10 +71,11 @@ def timetable(request: HttpRequest) -> HttpResponse:
     :param request: To view the timetable page
     :return: The timetable page
     """
+    coursecodes = JSONParser.get_course_names()
     course_indexes = [L.split()[0] for L in request.GET.getlist('course')]
     combinations = timetable_cache.get(course_indexes) or Planner.generate_combis(course_indexes)
     timetable_cache.set(course_indexes, combinations)
-    return render(request, 'timetable.html', {"combinations": combinations})
+    return render(request, 'timetable.html', {"combinations": combinations, "coursecodes" : coursecodes})
 
 
 @login_required(login_url='home')
@@ -91,5 +93,4 @@ def search(request: HttpRequest) -> HttpResponse:
     :return: The search page
     """
     coursecodes = JSONParser.get_course_names()
-    # coursenames = ["CZ2001", "CZ2002", "CZ2003", "CZ2004", "CZ2005", "CZ2006"]
     return render(request, 'search.html', {"coursecodes": coursecodes})
