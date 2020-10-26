@@ -52,15 +52,16 @@ def profile(request: HttpRequest) -> HttpResponse:
     :return: The profile page
     """
 
-    s1 = Student()
-    s1.matric = "U1922118L"
-    s1.name = "Aik Yu Chen"
-    s1.study_yr = "2"
-    s1.course = "Computer Science"
-    s1.mods_cleared = "CZ1011", "CZ1012", "CZ1007", "MH1812"
-    s1.img = "https://cdn.dribbble.com/users/935504/screenshots/3123811/artboard.png"
+    # s1 = Student()
+    # s1.matric = "U1922118L"
+    # s1.name = "Aik Yu Chen"
+    # s1.study_yr = "2"
+    # s1.course = "Computer Science"
+    # s1.mods_cleared = "CZ1011", "CZ1012", "CZ1007", "MH1812"
+    # s1.img = "https://cdn.dribbble.com/users/935504/screenshots/3123811/artboard.png"
 
-    return render(request, 'profile.html', {"s": s1})
+    user = request.user
+    return render(request, 'profile.html', {"user": user})
 
 
 @login_required(login_url='home')

@@ -17,11 +17,11 @@
     <br><br><br><br><br><br><br><br><br><br><br>
     <div id="photo"><img src= "{{s.img}}" ></div>
     <table>
-        <tr><td>Matric:</td><td>{{s.matric}}</td></tr>
-        <tr><td>Name:</td><td>{{s.name}}</td></tr>
-        <tr><td>Study Yr:</td><td>{{s.study_yr}}</td></tr>
-        <tr><td>Course:</td><td>{{s.course}}</td></tr>
-        <tr><td>Module Passed:</td><td>{% for mods in s.mods_cleared %} {{mods}} {% endfor%}</td></tr>
+        <tr><td>Matric:</td><td>{{user.username}}</td></tr>
+        <tr><td>Name:</td><td>{{user.first_name}} {{ user.last_name }}</td></tr>
+{#        <tr><td>Study Yr:</td><td>{{user.study_yr}}</td></tr>#}
+{#        <tr><td>Course:</td><td>{{user.course}}</td></tr>#}
+        <tr><td>Module Passed:</td><td>{{user.courses_cleared}}</td></tr>
     </table>
 </body>
 </html>
