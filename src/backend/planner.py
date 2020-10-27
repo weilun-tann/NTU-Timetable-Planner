@@ -5,8 +5,8 @@ TIMETABLE COMBINATIONS GO HERE
 from collections import deque
 from typing import List, Tuple, Dict, Deque
 
-from backend.entities import Course, Index
-from backend.json_parser import JSONParser
+from src.backend.entities import Course, Index
+from src.backend.json_parser import JSONParser
 
 
 class Planner:
@@ -45,12 +45,12 @@ class Planner:
         return not Planner.clashes(intervals)
 
     @staticmethod
-    def get_intervals(combi: List[Index]) -> List[Tuple[str, int, int]]:
-        return sorted(
-            [(lesson.day, str(lesson.t_start), str(lesson.t_end)) for index in combi for lesson in index.lessons])
+    def get_intervals(combi: List[Index]) -> List[Tuple[str, str, str]]:
+        return [(lesson.day, str(lesson.t_start), str(lesson.t_end)) for index in combi for lesson in index.lessons]
 
     @staticmethod
-    def clashes(intervals: List[Tuple[str, int, int]]) -> bool:
+    def clashes(intervals: List[Tuple[str, str, str]]) -> bool:
+        intervals = sorted(intervals)
         for i in range(1, len(intervals)):
             if intervals[i - 1][0] == intervals[i][0]:  # CHECK IF SAME DAY FIRST
                 last_end, curr_start = intervals[i - 1][2], intervals[i][1]
@@ -60,7 +60,6 @@ class Planner:
 
     @staticmethod
     def get_alt_indexes(clicked_index: str, combi: Dict[str, str]) -> List[Index]:
-        # TODO : FILL IN LOGIC HERE
         course_code = [k for k, v in combi.items() if v == clicked_index][0]
         combi = {k: [i for i in JSONParser.get_indexes(k) if i.index == v][0] for k, v in combi.items() if
                  v != clicked_index}

@@ -4,11 +4,10 @@ METHOD HERE TO GIVE YOU THE PROCESSED VERSION
 """
 
 import json
-import os
 from datetime import timedelta, datetime
 from typing import List, Dict
 
-from backend.entities import Course, Lesson, Index
+from src.backend.entities import Course, Lesson, Index
 
 
 class JSONParser:
