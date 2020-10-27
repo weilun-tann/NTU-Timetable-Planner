@@ -1,7 +1,13 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}
 	Timetable
+{% endblock  %}
+
+{% block additional_styles %}
+	<link href="{% static 'css/timetable.css' %}" rel="stylesheet"/>
+	<script src="{% static 'js/timetable.js' %}"></script>
 {% endblock  %}
 
 {% block inline_scripts %}
