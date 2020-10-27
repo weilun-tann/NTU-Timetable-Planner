@@ -112,7 +112,7 @@
 						{% for course, index in combi.items %}
 							{% for lesson in index.lessons %}
 								{
-									title: '{{ course.name }}',
+									title: '{{ course.name }}'.replace(/&amp;/g, '&').replace(/&#x27;/g, "\'"),
 									start: '{{ lesson.date }}T{{ lesson.t_start }}',
 									end: '{{ lesson.date }}T{{ lesson.t_end }}',
 									allDay: false,
