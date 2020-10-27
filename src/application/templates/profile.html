@@ -1,21 +1,18 @@
-<!DOCTYPE html>
+{% extends 'base.html' %}
 {% load static %}
-<html lang="en">
 
-<!--LOAD YOUR STYLESHEETS HERE-->
-<head>
-    <meta charset="UTF-8">
-    <title>Profile</title>
-    <link href="{% static 'css/profile.css' %}" rel="stylesheet"/>
-    <script src="{% static 'js/profile.js' %}"></script>
-    <script src='{% static "js/jquery-3.5.1.min.js" %}'></script>
-</head>
+{% block title %}
+	Profile
+{% endblock  %}
 
-<!--RENDER YOUR PAGE CONTENT HERE-->
-<body>
-    {% include 'navbar.html' %}
-    <br><br><br><br><br><br><br><br><br><br><br>
-    <div id="photo"><img src= "{{s.img}}" ></div>
+{% block additional_styles %}
+	<link href="{% static 'css/profile.css' %}" rel="stylesheet"/>
+	<script src="{% static 'js/profile.js' %}"></script>
+{% endblock  %}
+
+{% block body_content %}
+	<br/><br/><br/><br/><br/><br/><br/><br/>
+	<div id="photo"><img src= "{{s.img}}" ></div>
     <table>
         <tr><td>Matric:</td><td>{{user.username}}</td></tr>
         <tr><td>Name:</td><td>{{user.first_name}} {{ user.last_name }}</td></tr>
@@ -23,5 +20,4 @@
 {#        <tr><td>Course:</td><td>{{user.course}}</td></tr>#}
         <tr><td>Module Passed:</td><td>{{user.courses_cleared}}</td></tr>
     </table>
-</body>
-</html>
+{% endblock  %}

@@ -38,8 +38,6 @@
     top: 21%;
 }
 
-html { width: 100%; height:100%; overflow:hidden; overflow-anchor: none;}
-
 select[data-multi-select-plugin] {
     display: none !important;
 }

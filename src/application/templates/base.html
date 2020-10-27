@@ -1,0 +1,75 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+	<!--LOAD YOUR STYLESHEETS HERE-->
+	<head>
+		<meta charset="UTF-8">
+		<title>{% block title %}{% endblock  %}</title>
+		<link href="{% static 'css/timetable.css' %}" rel="stylesheet"/>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+		<link href="{% static 'css/navbarsearch.css' %}" rel="stylesheet"/>
+		
+		<script src='{% static "js/jquery-3.5.1.min.js" %}'></script>
+		<script src="{% static 'js/timetable.js' %}"></script>
+		<script src='{% static "js/jquery-3.5.1.min.js" %}'></script>
+		<script src="{% static 'js/search.js' %}"></script>
+
+		{% block additional_styles %}
+		{% endblock %}
+	</head>
+
+	{% block inline_scripts %}
+	{% endblock %}
+
+	{# TODO - MOVE THIS INTO TIMETABLE.CSS#}
+	<style>
+		body {
+			font-size: 14px;
+			font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+		}
+		.logout {
+			font-size: 18px;
+			color: #fff;
+			margin-right: 10px;
+		}
+
+		{% block inline_styles %}
+
+		{% endblock  %}
+	</style>
+	<body>
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+			<a class="navbar-brand" href="{% url 'profile' %}">Digist Timetable Planner</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarText">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item">
+					<a class="nav-link" href="{% url 'profile' %}">Profile</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="{% url 'search' %}">Plan</a>
+				</li>
+				<li>
+					<div class="container">
+						<form action={% url "timetable" %}>
+							<select data-multi-select-plugin name="course" id = "courseselect" multiple>
+									{% for coursecode, coursename in coursecodes.items %}
+										<option value="{{ coursecode }} {{ coursename }}"></option>
+									{% endfor %}
+							</select>
+						</form>
+					</div>
+				</li>
+			</ul>
+
+			</div>
+				<span><a class="logout" href="{% url 'logout' %}">Logout<a/></span>
+			</nav>
+		{% block body_content %}
+		{% endblock  %}
+	</body>
+</html>
