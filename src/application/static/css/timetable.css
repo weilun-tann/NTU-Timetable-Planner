@@ -884,6 +884,7 @@ A HORIZONTAL event
   .fc-daygrid-block-event .fc-event-title {
     padding: 1px;
   }
+
 /* --- the dot style of event --- */
 .fc-daygrid-dot-event {
   display: flex;

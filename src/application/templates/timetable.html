@@ -18,6 +18,15 @@
 			* @param {String} clickedIndex The index of the lesson that was clicked
 			* @param {Object} combi A key-value map of the current combination {'Course_Index' : 'Index_Number'} - eg  {'CZ2001': '10184', 'CZ2002': '10203}
 			*/
+
+			function parseTime( t ) {
+               var d = new Date();
+               var time = t.match( /(\d+)(?::(\d\d))?\s*(p?)/ );
+               d.setHours( parseInt( time[1]) + (time[3] ? 12 : 0) );
+               d.setMinutes( parseInt( time[2]) || 0 );
+               return d;
+            }
+
 			function getAlternateIndexes(clickedIndex, combi) {
 				$.ajax({
 					type: "POST",
@@ -38,126 +47,138 @@
 			function getAlternateIndexesOnSuccess(data) {
 				const alt_indexes = JSON.parse(data["alt_indexes"]);
 				if (alt_indexes.length === 0) console.log("NO ALTERNATIVES");
-				for (let alt of alt_indexes) console.log(alt.index);
-
+				let altEvents = [];
+                for (let index of alt_indexes) {
+                    for(let lesson of index.lessons){
+                        if(lesson.ltype != "LEC/STUDIO") {
+                            altEvents.push({
+                                title: lesson.ltype,
+                                start: lesson.date.concat("T", lesson.t_start),
+                                end: lesson.date.concat("T", lesson.t_end),
+                                allDay: false,
+                                backgroundColor: "#f0b746",
+                                extendedProps: {alternate: true},
+                            });
+                        }
+                    }
+                }
+                console.log(combinations[combinationNum]);
+                console.log("------------------");
+                console.log(altEvents);
+                calendar.addEventSource(altEvents);
+                calendar.render();
 				// TODO - @TIMETABLE TEAM - FROM HERE, YOU GUYS HAVE A LIST[INDEX OBJECT] STORED IN alt_indexes
 				// TODO - REFER TO backend/entities.py/Index class FOR ALL ATTRIBUTES YOU MIGHT NEED
 			}
 
 			/* initialize the calendar
 			-----------------------------------------------------------------*/
-			var i = 1;
-			var currentCal = 1;
-			var totalcombinations = 0;
+            let combinations = [];
+            {% for combination in combinations %}
+                var combiObj = {};
+                var combi = [];
+                {% for course, index in combination.items %}
+                    {% for lesson in index.lessons %}
+                        combiObj['{{ course.code }}'] = '{{ lesson.index }}';
+                        combi.push({
+                            title: '{{ course.name }}'.slice(0, -1).concat(" - {{ lesson.ltype }}"),
+                            start: '{{ lesson.date }}T{{ lesson.t_start }}',
+                            end: '{{ lesson.date }}T{{ lesson.t_end }}',
+                            allDay: false,
+                            extendedProps: {index: '{{ lesson.index }}', combiObj: combiObj},
+                        });
+                    {% endfor %}
+                {% endfor %}
+                combinations.push(combi);
+            {% endfor %}
 
-			{% for combi in combinations %}
-				var combiObj = {};
-				totalcombinations += 1;
-				{% for course, idx in combi.items %}
-					{% for lesson in idx.lessons %}
-						combiObj['{{ course.code }}'] = '{{ lesson.index }}';
-					{% endfor %}
-				{%endfor%}
-				var cal = document.createElement("div");
-				cal.setAttribute("id", "calendar" + i);
-				var div2 = document.createElement("div");
-				div2.setAttribute("id", "innerCal" + i);
+            var combinationNum = 0;
 
-				var title = document.createElement("h1");
-				var titleText = document.createTextNode("Combination " + i);
-				title.style.cssText = "margin-top: 20px;";
-				title.appendChild(titleText);
+            var cal = document.createElement("div");
+            cal.setAttribute("id", "calendar");
+            var div2 = document.createElement("div");
+            div2.setAttribute("id", "innerCal");
 
-				cal.appendChild(title);
-				cal.appendChild(div2);
-				var parent = document.getElementById("calendar-wrap");
-				parent.appendChild(cal);
+            var title = document.createElement("h1");
+            title.setAttribute("id", "title");
+            var titleText = document.createTextNode("Combination " + (combinationNum + 1));
+            title.style.cssText = "margin-top: 80px;";
+            title.appendChild(titleText);
 
-				var calendarE1 = document.getElementById('innerCal' + i);
-				var calendar = new FullCalendar.Calendar(calendarE1, {
-					
-					eventClick: function (info) {
-						getAlternateIndexes(info.event.extendedProps.index,
-							info.event.extendedProps.combiObj)
-					},
-					customButtons: {
-						myPrevButton: {
-							text: 'Prev',
-							click: function () {
-								if(currentCal - 1 > 0) {
-									document.getElementById("calendar" + currentCal).style.display = "none";
-									currentCal--;
-									document.getElementById("calendar" + currentCal).style.display = "block";
-								}
-							}
-						},
-						myNextButton: {
-							text: 'Next',
-							click: function () {
-								if(currentCal + 1 <= totalcombinations) {
-									document.getElementById("calendar" + currentCal).style.display = "none";
-									currentCal++;
-									document.getElementById("calendar" + currentCal).style.display = "block";
-								}
-							}
-						}
-					},
-					headerToolbar: {
-						left: false,
-						center: false,
-						right: 'myPrevButton,myNextButton'
+            cal.appendChild(title);
+            cal.appendChild(div2);
+            var parent = document.getElementById("calendar-wrap");
+            parent.appendChild(cal);
 
-					},
-					events: [
-						{% for course, index in combi.items %}
-							{% for lesson in index.lessons %}
-								{
-									title: '{{ course.name }}',
-									start: '{{ lesson.date }}T{{ lesson.t_start }}',
-									end: '{{ lesson.date }}T{{ lesson.t_end }}',
-									allDay: false,
-									extendedProps: {index: '{{ lesson.index }}', combiObj: combiObj},
-								},
-							{% endfor %}
-						{% endfor %}
+            var calendarE1 = document.getElementById('innerCal');
+            var calendar = new FullCalendar.Calendar(calendarE1, {
 
-						{}
-					],
-					allDaySlot: false,
-					//nowIndicator: true,
-					dayHeaderFormat: {weekday: 'long'},
-					slotMinTime: '08:00',
-					slotMaxTime: '19:00',
-					slotDuration: '00:30',
-					initialView: 'timeGridWeek',
-					expandRows: true,
-					weekends: false,
-					editable: false,
-					droppable: true, // this allows things to be dropped onto the calendar
-					drop: function (arg) {
-						// is the "remove after drop" checkbox checked?
-						if (document.getElementById('drop-remove').checked) {
-							// if so, remove the element from the "Draggable Events" list
-							arg.draggedEl.parentNode.removeChild(arg.draggedEl);
-						}
-					},
-				});
-				calendar.render();
-				if (i !== 1) {
-					document.getElementById("calendar" + i).style.display = "none";
-				}
-				i = i + 1;
-			{% endfor %}
-		})
-		;
+                eventClick: function (info) {
+                    getAlternateIndexes(info.event.extendedProps.index,
+                        info.event.extendedProps.combiObj)
+                },
+                customButtons: {
+                    myPrevButton: {
+                        text: 'Prev',
+                        click: function () {
+                            if(combinationNum > 0) {
+                                calendar.removeAllEvents();
+                                combinationNum -= 1;
+                                calendar.addEventSource(combinations[combinationNum]);
+                                title.innerHTML = "Combination " + (combinationNum + 1);
+                            }
+                        }
+                    },
+                    myNextButton: {
+                        text: 'Next',
+                        click: function () {
+                            if(combinationNum < combinations.length - 1) {
+                                calendar.removeAllEvents();
+                                combinationNum += 1;
+                                calendar.addEventSource(combinations[combinationNum]);
+                                title.innerHTML = "Combination " + (combinationNum + 1);
+                            }
+                        }
+                    }
+                },
+                headerToolbar: {
+                    left: false,
+                    center: false,
+                    right: 'myPrevButton,myNextButton'
+
+                },
+                events: [
+
+                ],
+                allDaySlot: false,
+                //nowIndicator: true,
+                dayHeaderFormat: {weekday: 'long'},
+                slotMinTime: '08:00',
+                slotMaxTime: '19:00',
+                slotDuration: '00:30',
+                initialView: 'timeGridWeek',
+                expandRows: true,
+                weekends: false,
+                editable: false,
+                droppable: true, // this allows things to be dropped onto the calendar
+                drop: function (arg) {
+                    // is the "remove after drop" checkbox checked?
+                    if (document.getElementById('drop-remove').checked) {
+                        // if so, remove the element from the "Draggable Events" list
+                        arg.draggedEl.parentNode.removeChild(arg.draggedEl);
+                    }
+                },
+            });
+            calendar.addEventSource(combinations[0]);
+            calendar.render();
+		});
 
 		const [entry] = performance.getEntriesByType("navigation");
 		if (entry["type"] === "back_forward") {
 			location.reload();
 		}
 	</script>
-{% endblock  %}
-
+{% endblock %}
 {% block inline_styles %}
 	#calendar-wrap {
         max-width: 1100px;
