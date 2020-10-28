@@ -7,7 +7,7 @@ import json
 from datetime import timedelta, datetime
 from typing import List, Dict
 
-from src.backend.entities import Course, Lesson, Index
+from backend.entities import Course, Lesson, Index
 
 
 class JSONParser:

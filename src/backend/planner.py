@@ -5,8 +5,8 @@ TIMETABLE COMBINATIONS GO HERE
 from collections import deque
 from typing import List, Tuple, Dict, Deque
 
-from src.backend.entities import Course, Index
-from src.backend.json_parser import JSONParser
+from backend.entities import Course, Index
+from backend.json_parser import JSONParser
 
 
 class Planner:

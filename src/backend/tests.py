@@ -1,6 +1,6 @@
 import unittest
 
-from src.backend.planner import Planner
+from backend.planner import Planner
 
 
 class BackendTests(unittest.TestCase):
