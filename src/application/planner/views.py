@@ -75,6 +75,9 @@ def timetable(request: HttpRequest) -> HttpResponse:
     course_indexes = [L.split()[0] for L in request.GET.getlist('course')]
     combinations = timetable_cache.get(course_indexes) or Planner.generate_combis(course_indexes)
     timetable_cache.set(course_indexes, combinations)
+
+    # TODO - THIS IS FOR DEMO PURPOSES ONLY
+    combinations = combinations[:min(173, len(combinations))]
     return render(request, 'timetable.html', {"combinations": combinations, "coursecodes" : coursecodes})
 
 
