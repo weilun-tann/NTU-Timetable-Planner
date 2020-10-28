@@ -46,8 +46,7 @@ class JSONParser:
                                           det["day"], det["time"]["full"],
                                           det["time"]["start"], det["time"]["end"],
                                           det["time"]["duration"], det["location"],
-                                          det["flag"], det["remarks"],
-                                          JSONParser.get_date(det), course_code))
+                                          det["flag"], det["remarks"], JSONParser.get_date(det)))
         return lessons
 
     @staticmethod

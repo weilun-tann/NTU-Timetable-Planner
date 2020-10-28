@@ -59,7 +59,7 @@
 				</li>
 				<li>
 					<div class="container">
-						<form action={% url "timetable" %}>
+						<form action={% url "loading" %}>
 							<select data-multi-select-plugin name="course" id = "courseselect" multiple>
 									{% for coursecode, coursename in coursecodes.items %}
 										<option value="{{ coursecode }} {{ coursename }}"></option>

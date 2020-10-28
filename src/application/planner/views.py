@@ -94,3 +94,8 @@ def search(request: HttpRequest) -> HttpResponse:
     """
     coursecodes = JSONParser.get_course_names()
     return render(request, 'search.html', {"coursecodes": coursecodes})
+
+
+@login_required(login_url='home')
+def loading(request):
+    return render(request, "loading.html")

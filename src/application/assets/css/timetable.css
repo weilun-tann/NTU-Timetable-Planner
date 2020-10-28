@@ -884,6 +884,7 @@ A HORIZONTAL event
   .fc-daygrid-block-event .fc-event-title {
     padding: 1px;
   }
+
 /* --- the dot style of event --- */
 .fc-daygrid-dot-event {
   display: flex;
@@ -1420,8 +1421,6 @@ A VERTICAL event
 .fc .fc-list-event.fc-event-forced-url:hover a {
     text-decoration: underline;
   }
-
-
 
   .fc-theme-bootstrap a:not([href]) {
     color: inherit; /* natural color for navlinks */

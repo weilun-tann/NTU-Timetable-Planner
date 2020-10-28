@@ -47,10 +47,10 @@
 {% block body_content %}
 	<div class="container">
 		<h1>Select Courses</h1>
-		<form action={% url "timetable" %}>
+		<form action={% url "loading" %}>
 			<select data-multi-select-plugin name="course" id = "courseselect" multiple>
 				{% for coursecode, coursename in coursecodes.items %}
-					<option value="{{ coursecode }} {{ coursename }}"></option>
+					<option value="{{ coursecode }} {{ coursename}}"></option>
 				{% endfor %}
 				<input type="submit" value="Create Timetable" class="btn btn-primary btn-block btn-large">
 			</select>

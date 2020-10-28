@@ -9,4 +9,5 @@ urlpatterns = [
     path('timetable/', views.timetable, name='timetable'),
     path('timetable/alt_indexes/', views.alt_indexes, name='alt_indexes'),
     path('search/', views.search, name='search'),
+    path('loading/', views.loading, name='loading'),
 ]
