@@ -432,7 +432,8 @@ When it's NOT activated, the fc-button classes won't even be in the DOM.
   }
 .fc .fc-col-header-cell-cushion {
     display: inline-block; /* x-browser for when sticky (when multi-tier header) */
-    padding: 2px 4px;
+	padding: 2px 4px;
+	color: white !important;
   }
 .fc .fc-bg-event,
   .fc .fc-non-business,
@@ -1083,7 +1084,8 @@ A VERTICAL event
   }
 .fc .fc-timegrid-slot-label-cushion {
     display: inline-block;
-    white-space: nowrap;
+	white-space: nowrap;
+	color: white !important;
   }
 .fc .fc-timegrid-slot-label {
     vertical-align: middle; /* vertical align the slots */
