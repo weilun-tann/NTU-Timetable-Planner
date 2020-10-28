@@ -82,7 +82,7 @@ class Planner:
                     for lessons in index.lessons:
                         serialise[i][course.name][j][index.index].append(
                             {"date": lessons.date, "t_start": lessons.t_start, "t_end": lessons.t_end,
-                             "ltype": lessons.ltype})
+                             "ltype": lessons.ltype, "course_code": course.code})
                     j += 1
             i += 1
         return serialise
