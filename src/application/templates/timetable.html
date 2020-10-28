@@ -23,15 +23,6 @@
 			* @param {String} clickedIndex The index of the lesson that was clicked
 			* @param {Object} combi A key-value map of the current combination {'Course_Index' : 'Index_Number'} - eg  {'CZ2001': '10184', 'CZ2002': '10203}
 			*/
-
-			function parseTime( t ) {
-               var d = new Date();
-               var time = t.match( /(\d+)(?::(\d\d))?\s*(p?)/ );
-               d.setHours( parseInt( time[1]) + (time[3] ? 12 : 0) );
-               d.setMinutes( parseInt( time[2]) || 0 );
-               return d;
-            }
-
 			function getAlternateIndexes(clickedIndex, combi) {
 				$.ajax({
 					type: "POST",
@@ -45,6 +36,11 @@
 				})
 			}
 
+            function restoreRemovedEvents() {
+                for (let event of removedEvents) calendar.addEvent(event);
+                removedEvents.length = 0;
+            }
+
 			function deleteAlternatives() {
 			    const events = calendar.getEvents();
 
@@ -56,15 +52,11 @@
             }
 
             function dimLessonsOfIndex(index) {
-			    console.log(`dimming index ${index}`);
 			    const events = calendar.getEvents();
 			    for (let event of events) {
-			        console.log(event.title);
-			        // TODO : FIX THE PART ON RE-ADDING LESSONS
 			        if (event.extendedProps.index === index &&
                         (event.extendedProps.ltype === 'TUT' || event.extendedProps.ltype == 'LAB')) {
-			            console.log(`dimming event ${event}`)
-                        console.log(event.title, event.backgroundColor);
+			            removedEvents.push(event);
 			            event.remove();
                     }
                 }
@@ -75,13 +67,11 @@
 			* @param {Object} data The response returned from the API endpoint (ie. JS-equivalent of a Django context dict)
 			*/
 			function getAlternateIndexesOnSuccess(clickedIndex, data) {
-			    console.log('clickedIndex', clickedIndex)
-                console.log('data', data)
+                restoreRemovedEvents();
 			    deleteAlternatives();
 			    dimLessonsOfIndex(clickedIndex);
 			    const colors = ["#ff793f", "#b33939", "#3742fa", "#2f3542", "#4b4b4b"]
 				const alt_indexes = JSON.parse(data["alt_indexes"]);
-				if (alt_indexes.length === 0) console.log("NO ALTERNATIVES");
 				let altEvents = [];
                 for (let i=0; i<alt_indexes.length; i++) {
                     const index = alt_indexes[i];
@@ -98,14 +88,14 @@
                         }
                     }
                 }
-                console.log(combinations[combinationNum]);
-                console.log("------------------");
-                console.log(altEvents);
                 calendar.addEventSource(altEvents);
                 calendar.render();
 				// TODO - @TIMETABLE TEAM - FROM HERE, YOU GUYS HAVE A LIST[INDEX OBJECT] STORED IN alt_indexes
 				// TODO - REFER TO backend/entities.py/Index class FOR ALL ATTRIBUTES YOU MIGHT NEED
 			}
+
+			// TODO - refactor as class state
+            const removedEvents = [];
 
 			/* initialize the calendar
 			-----------------------------------------------------------------*/
