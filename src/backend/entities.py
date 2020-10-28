@@ -25,7 +25,8 @@ class Lesson:
 
     def __init__(self, index: str, ltype: LessonType, group: str,
                  day: str, t_full: str, t_start: str, t_end: str,
-                 duration: float, location: int, flag: int, remarks: str, date: str):
+                 duration: float, location: int, flag: int, remarks: str,
+                 date: str, course_code: str):
         self.index = index
         self.ltype = ltype
         self.group = group
@@ -38,12 +39,13 @@ class Lesson:
         self.flag = flag
         self.remarks = remarks
         self.date = date
+        self.course_code = course_code
 
     def __json__(self):
         return dict(index=self.index, ltype=self.ltype, group=self.group, day=self.day,
                     t_full=self.t_full, t_start=self.t_start, t_end=self.t_end,
                     duration=self.duration, location=self.location, flag=self.flag,
-                    remarks=self.remarks, date=self.date)
+                    remarks=self.remarks, date=self.date, course_code=self.course_code)
 
 
 class Index:
