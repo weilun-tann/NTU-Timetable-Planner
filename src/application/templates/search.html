@@ -1,32 +1,34 @@
-<!DOCTYPE html>
+{% extends 'base.html' %}
 {% load static %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Search Courses</title>
-    <link href="{% static 'css/search.css' %}" rel="stylesheet"/>
+
+{% block title %}
+	Search Courses
+{% endblock  %}
+
+{% block additional_styles %}
+	<link href="{% static 'css/search.css' %}" rel="stylesheet"/>
     <script src="{% static 'js/search.js' %}"></script>
-</head>
+{% endblock  %}
 
-<script type="text/javascript">
-  const [entry] = performance.getEntriesByType("navigation");
-    if (entry["type"] === "back_forward"){
-        location.reload();
-    }
-</script>
+{% block inline_scripts %}
+	<script type="text/javascript">
+		const [entry] = performance.getEntriesByType("navigation");
+		if (entry["type"] === "back_forward"){
+			location.reload();
+		}
+	</script>
+{% endblock  %}
 
-<body>
-        {% include 'navbar.html' %}
-        <div class="container">
-            <h1>Select Courses</h1>
-            <form action={% url "timetable" %}>
-                <select data-multi-select-plugin name="course" id = "courseselect" multiple>
-                    {% for coursecode, coursename in coursecodes.items %}
-                        <option value="{{ coursecode }} {{ coursename }}"></option>
-                    {% endfor %}
-                    <input type="submit" value="Create Timetable" class="btn btn-primary btn-block btn-large">
-                </select>
-            </form>
-        </div>
-</body>
-</html>
+{% block body_content %}
+	<div class="container">
+		<h1>Select Courses</h1>
+		<form action={% url "timetable" %}>
+			<select data-multi-select-plugin name="course" id = "courseselect" multiple>
+				{% for coursecode, coursename in coursecodes.items %}
+					<option value="{{ coursecode }} {{ coursename }}"></option>
+				{% endfor %}
+				<input type="submit" value="Create Timetable" class="btn btn-primary btn-block btn-large">
+			</select>
+		</form>
+	</div>
+{% endblock  %}
