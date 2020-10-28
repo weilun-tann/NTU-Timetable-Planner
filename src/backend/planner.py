@@ -60,7 +60,9 @@ class Planner:
 
     @staticmethod
     def get_alt_indexes(clicked_index: str, combi: Dict[str, str]) -> List[Index]:
-        course_code = [k for k, v in combi.items() if v == clicked_index][0]
+        course_codes = [k for k, v in combi.items() if v == clicked_index]
+        if not course_codes: return []
+        course_code = course_codes[0]
         combi = {k: [i for i in JSONParser.get_indexes(k) if i.index == v][0] for k, v in combi.items() if
                  v != clicked_index}
         indexes = JSONParser.get_indexes(course_code)
