@@ -32,15 +32,23 @@
 						"combi": JSON.stringify(combi),
 						"csrfmiddlewaretoken": "{{ csrf_token }}"
 					},
-					success: data => getAlternateIndexesOnSuccess(clickedIndex, data),
+					success: data => getAlternateIndexesOnSuccess(clickedIndex, combi, data),
 				})
 			}
 
+            /**
+			* Restores all previously removed events
+			*/
             function restoreRemovedEvents() {
-                for (let event of removedEvents) calendar.addEvent(event);
+                for (let event of removedEvents) {
+                    calendar.addEvent(event);
+                }
                 removedEvents.length = 0;
             }
 
+            /**
+			* Delete all alternative indexes
+			*/
 			function deleteAlternatives() {
 			    const events = calendar.getEvents();
 
@@ -51,39 +59,69 @@
                 }
             }
 
-            function dimLessonsOfIndex(index) {
+            function removeLessons(index) {
 			    const events = calendar.getEvents();
 			    for (let event of events) {
-			        if (event.extendedProps.index === index &&
-                        (event.extendedProps.ltype === 'TUT' || event.extendedProps.ltype == 'LAB')) {
+			        const shouldRemove = event.extendedProps.index === index &&
+                        (event.extendedProps.ltype === 'TUT' || event.extendedProps.ltype == 'LAB')
+			        if  (shouldRemove) {
 			            removedEvents.push(event);
 			            event.remove();
                     }
                 }
             }
 
+            function setAlternateIndexAsMain(event) {
+			    const events = calendar.getEvents();
+                event.setExtendedProp('alternate', false);
+                const combiObj = event.extendedProps.combiObj
+
+                for (let course_code in combiObj) {
+                    if (course_code === event.extendedProps.course_code) {
+                        combiObj[course_code] = event.extendedProps.index;
+                        event.setExtendedProp('combiObj', combiObj);
+                        break;
+                    }
+                }
+
+			    for (let e of events) {
+                    // ensure that they are the same course
+			        if (e.extendedProps.course_code === event.extendedProps.course_code) {
+
+			            // if it's the event's index, we set alternate to false
+			            // TODO : FIND A WAY TO CHANGE COLOR
+                        // TODO : TRY GLOBAL CALENDAR SETTING
+                        if (e.extendedProps.index !== event.extendedProps.index) {
+                            e.backgroundColor = "#fd79a8";
+                            e.remove();
+                        }
+                    }
+                }
+            };
+
 			/**
 			* Handler for a successful POST request in getAlternateIndexes(...)
-			* @param {Object} data The response returned from the API endpoint (ie. JS-equivalent of a Django context dict)
 			*/
-			function getAlternateIndexesOnSuccess(clickedIndex, data) {
+			function getAlternateIndexesOnSuccess(clickedIndex, combiObj, data) {
                 restoreRemovedEvents();
 			    deleteAlternatives();
-			    dimLessonsOfIndex(clickedIndex);
-			    const colors = ["#ff793f", "#b33939", "#3742fa", "#2f3542", "#4b4b4b"]
+			    removeLessons(clickedIndex);
+			    const colors = ["#8395a7"]
 				const alt_indexes = JSON.parse(data["alt_indexes"]);
 				let altEvents = [];
                 for (let i=0; i<alt_indexes.length; i++) {
                     const index = alt_indexes[i];
                     for(let lesson of index.lessons){
-                        if(lesson.ltype != "LEC/STUDIO") {
+                        if(lesson.ltype !== "LEC/STUDIO") {
                             altEvents.push({
-                                title: lesson.ltype,
+                                title: `${lesson.course_code} ${lesson.ltype} ${lesson.index}`,
                                 start: lesson.date.concat("T", lesson.t_start),
                                 end: lesson.date.concat("T", lesson.t_end),
                                 allDay: false,
-                                backgroundColor: colors[i],
-                                extendedProps: {alternate: true, ltype: lesson.ltype},
+                                backgroundColor: colors[i % colors.length],
+                                extendedProps: {alternate: true, ltype: lesson.ltype,
+                                                index: lesson.index, course_code: lesson.course_code,
+                                                combiObj: combiObj}
                             });
                         }
                     }
@@ -100,6 +138,7 @@
 			/* initialize the calendar
 			-----------------------------------------------------------------*/
             let combinations = [];
+
             {% for combination in combinations %}
                 var combiObj = {};
                 var combi = [];
@@ -107,11 +146,13 @@
                     {% for lesson in index.lessons %}
                         combiObj['{{ course.code }}'] = '{{ lesson.index }}';
                         combi.push({
-                            title: '{{ course.name }}'.slice(0, -1).concat(" - {{ lesson.ltype }}"),
+                            title: '{{ course.code }}'.concat(" {{ lesson.ltype }}".concat(" {{ lesson.index }}")),
                             start: '{{ lesson.date }}T{{ lesson.t_start }}',
                             end: '{{ lesson.date }}T{{ lesson.t_end }}',
                             allDay: false,
-                            extendedProps: {index: '{{ lesson.index }}', ltype: '{{ lesson.ltype }}', combiObj: combiObj},
+                            extendedProps: {alternate: false, index: '{{ lesson.index }}',
+                                            ltype: '{{ lesson.ltype }}', course_code: '{{lesson.course_code}}',
+                                            combiObj: combiObj},
                         });
                     {% endfor %}
                 {% endfor %}
@@ -127,7 +168,7 @@
 
             var title = document.createElement("h1");
             title.setAttribute("id", "title");
-            var titleText = document.createTextNode("Combination " + (combinationNum + 1));
+            var titleText = document.createTextNode(`${combinationNum + 1} of ${combinations.length}`);
             title.style.cssText = "margin-top: 80px;";
             title.appendChild(titleText);
 
@@ -140,8 +181,12 @@
             var calendar = new FullCalendar.Calendar(calendarE1, {
 
                 eventClick: function (info) {
-                    getAlternateIndexes(info.event.extendedProps.index,
+                    if (info.event.extendedProps.alternate) {
+                        setAlternateIndexAsMain(info.event);
+                    } else {
+                        getAlternateIndexes(info.event.extendedProps.index,
                         info.event.extendedProps.combiObj)
+                    }
                 },
                 customButtons: {
                     myPrevButton: {
@@ -151,7 +196,7 @@
                                 calendar.removeAllEvents();
                                 combinationNum -= 1;
                                 calendar.addEventSource(combinations[combinationNum]);
-                                title.innerHTML = "Combination " + (combinationNum + 1);
+                                title.innerHTML = `${combinationNum + 1} of ${combinations.length}`;
                             }
                         }
                     },
@@ -162,7 +207,7 @@
                                 calendar.removeAllEvents();
                                 combinationNum += 1;
                                 calendar.addEventSource(combinations[combinationNum]);
-                                title.innerHTML = "Combination " + (combinationNum + 1);
+                                title.innerHTML = `${combinationNum + 1} of ${combinations.length}`;
                             }
                         }
                     }
