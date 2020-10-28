@@ -12,7 +12,14 @@
 		
 		<script src='{% static "js/jquery-3.5.1.min.js" %}'></script>
 		<script src="{% static 'js/search.js' %}"></script>
-
+        <style>
+            .navbar {
+                z-index: 10000;
+                position: fixed;
+                top: 0px;
+                width: 100%;
+            }
+        </style>
 		{% block additional_styles %}
 		{% endblock %}
 	</head>
