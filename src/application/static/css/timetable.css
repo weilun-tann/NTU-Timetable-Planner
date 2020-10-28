@@ -1422,8 +1422,6 @@ A VERTICAL event
     text-decoration: underline;
   }
 
-
-
   .fc-theme-bootstrap a:not([href]) {
     color: inherit; /* natural color for navlinks */
   }
