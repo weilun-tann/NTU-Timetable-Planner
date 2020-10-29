@@ -116,7 +116,7 @@
                     for (let lesson of index.lessons) {
                         if (lesson.ltype !== "LEC/STUDIO") {
                             altEvents.push({
-                                title: `${lesson.course_code} ${lesson.ltype}`,
+                                title: `${lesson.course_code} | ${lesson.ltype} | ${lesson.index}`,
                                 start: lesson.date.concat("T", lesson.t_start),
                                 end: lesson.date.concat("T", lesson.t_end),
                                 allDay: false,
@@ -141,8 +141,7 @@
             // TODO - refactor as class state
             const removedEvents = [];
             const eventColor = "#FD79A8";
-            const altEventColor = "#B2BEC3";
-            const altEventColors = ["#696969", "#7D7D7D", "#9E9E9E", "#BDBDBD"];
+            const altEventColors = ["#555F61", "#6F7C80", "#8C979A", "#A7AFB2", "#C1C7C9"];
 
             /* initialize the calendar
             -----------------------------------------------------------------*/
@@ -155,7 +154,7 @@
                     {% for lesson in index.lessons %}
                         combiObj['{{ course.code }}'] = '{{ lesson.index }}';
                         combi.push({
-                            title: '{{ course.code }}'.concat(" {{ lesson.ltype }}"),
+                            title: '{{ course.code }}'.concat(" | {{ lesson.ltype }} | ".concat("{{ lesson.index }}")),
                             start: '{{ lesson.date }}T{{ lesson.t_start }}',
                             end: '{{ lesson.date }}T{{ lesson.t_end }}',
                             allDay: false,
