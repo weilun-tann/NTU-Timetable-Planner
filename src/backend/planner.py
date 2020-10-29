@@ -71,7 +71,7 @@ class Planner:
         return Planner.deconflict(filtered_indexes)
 
     @staticmethod
-    def deconflict(filtered_indexes):
+    def deconflict(filtered_indexes: List[Index], clicked_index: Index) -> List[Index]:
         booked_timings = set()
         deconflicted_indexes = []
         for idx in filtered_indexes:
@@ -79,7 +79,7 @@ class Planner:
             for lesson in idx.lessons:
                 timing = (lesson.day, lesson.t_start, lesson.t_end)
                 if timing in booked_timings:
-                    conflict  = True
+                    conflict = True
                     break
             if not conflict:
                 booked_timings.add(timing)
