@@ -2,3 +2,5 @@ src/venv
 .idea
 *.pyc
 /venv
+src/application/db.sqlite3
+src/application/db.sqlite3

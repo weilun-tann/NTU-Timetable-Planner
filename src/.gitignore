@@ -2,3 +2,4 @@
 .vscode
 venv
 application/application/settings.py
+application/db.sqlite3
