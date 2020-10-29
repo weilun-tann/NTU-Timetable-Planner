@@ -1732,5 +1732,11 @@ body {
     transition: 0.5s;
 }
 
+/* COMBINATION COUNT ON TOP */
+#title {
+    font-family: "Palatino Linotype";
+    margin-bottom: -30px;
+    text-align: center;
+}
 
 
