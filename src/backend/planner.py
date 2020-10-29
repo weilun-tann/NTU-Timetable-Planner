@@ -68,7 +68,23 @@ class Planner:
         indexes = JSONParser.get_indexes(course_code)
         filtered_indexes = [i for i in indexes if
                             Planner.valid({**combi, **{course_code: i}}) and i.index != clicked_index]
-        return filtered_indexes
+        return Planner.deconflict(filtered_indexes)
+
+    @staticmethod
+    def deconflict(filtered_indexes):
+        booked_timings = set()
+        deconflicted_indexes = []
+        for idx in filtered_indexes:
+            conflict = False
+            for lesson in idx.lessons:
+                timing = (lesson.day, lesson.t_start, lesson.t_end)
+                if timing in booked_timings:
+                    conflict  = True
+                    break
+            if not conflict:
+                booked_timings.add(timing)
+                deconflicted_indexes.append(idx)
+        return deconflicted_indexes
 
     @staticmethod
     def serialise(combinations):
