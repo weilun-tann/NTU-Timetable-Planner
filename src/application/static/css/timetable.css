@@ -1710,20 +1710,19 @@ body {
 
 /* FONT SIZING FOR EVENT TIMING */
 .fc-event-time {
-    font-size: 1.2em;
+    font-size: 1em;
     font-weight: bold;
-    margin: 10px auto;
+    margin: 5px auto;
     position: relative;
 }
 
 /* FONT SIZING FOR EVENT TITLE */
 .fc-event-title-container {
-    font-size: 1.2em;
+    font-size: 1em;
     font-weight: bold;
-    margin: 10px auto;
+    margin: 5px auto;
     position: relative;
     text-align: center;
-    word-spacing: 100vw;
 }
 
 /* ON-HOVER EFFECTS FOR EVENT CONTAINER */
@@ -1733,15 +1732,5 @@ body {
     transition: 0.5s;
 }
 
-/* FONT SIZING FOR ALTERNATE EVENTS */
-a .fc-alt-event {
-    left: 0;
-    font-size: 0.7em;
-}
-
-/* DISPLAY EACH EVENT DETAIL ON NEW LINE */
-.fc-event-title .fc-sticky {
-    font-size: 10em;
-}
 
 

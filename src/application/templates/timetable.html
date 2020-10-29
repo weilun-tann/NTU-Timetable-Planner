@@ -94,6 +94,7 @@
 			            // TODO : FIND A WAY TO CHANGE COLOR
                         // TODO : TRY GLOBAL CALENDAR SETTING
                         if (e.extendedProps.index !== event.extendedProps.index) {
+                            console.log('SETTING 1 LESSON AS MAIN')
                             info.el.style.backgroundColor = eventColor;
                             e.remove();
                         }
@@ -115,7 +116,7 @@
                     for(let lesson of index.lessons){
                         if(lesson.ltype !== "LEC/STUDIO") {
                             altEvents.push({
-                                title: `${lesson.course_code} ${lesson.ltype} ${lesson.index}`,
+                                title: `${lesson.course_code} ${lesson.ltype}`,
                                 start: lesson.date.concat("T", lesson.t_start),
                                 end: lesson.date.concat("T", lesson.t_end),
                                 allDay: false,
@@ -151,7 +152,7 @@
                     {% for lesson in index.lessons %}
                         combiObj['{{ course.code }}'] = '{{ lesson.index }}';
                         combi.push({
-                            title: '{{ course.code }}'.concat(" {{ lesson.ltype }}".concat(" {{ lesson.index }}")),
+                            title: '{{ course.code }}'.concat(" {{ lesson.ltype }}"),
                             start: '{{ lesson.date }}T{{ lesson.t_start }}',
                             end: '{{ lesson.date }}T{{ lesson.t_end }}',
                             allDay: false,
