@@ -8,6 +8,7 @@
 {% block additional_styles %}
     <link href="{% static 'css/timetable.css' %}" rel="stylesheet"/>
     <script src="{% static 'js/timetable.js' %}"></script>
+    <script src="{% static 'js/interest_table.js' %}"></script>
 
     <script src='http://fullcalendar.io/js/fullcalendar-2.1.1/lib/moment.min.js'></script>
     <script src='http://fullcalendar.io/js/fullcalendar-2.1.1/lib/jquery.min.js'></script>
@@ -64,7 +65,7 @@
                 const events = calendar.getEvents();
                 for (let event of events) {
                     const shouldRemove = event.extendedProps.index === index &&
-                        (event.extendedProps.ltype === 'TUT' || event.extendedProps.ltype == 'LAB')
+                        (event.extendedProps.ltype === 'TUT' || event.extendedProps.ltype === 'LAB')
                     if (shouldRemove) {
                         removedEvents.push(event);
                         event.remove();
@@ -78,6 +79,7 @@
                 event.setExtendedProp('alternate', false);
                 const combiObj = event.extendedProps.combiObj
 
+                // UPDATE THE COMBI OBJECT
                 for (let course_code in combiObj) {
                     if (course_code === event.extendedProps.course_code) {
                         combiObj[course_code] = event.extendedProps.index;
@@ -86,21 +88,50 @@
                     }
                 }
 
+                // REMOVE ALL OTHER ALTERNATIVES THAT WERE NOT SELECTED
                 for (let e of events) {
-                    // ensure that they are the same course
-                    if (e.extendedProps.course_code === event.extendedProps.course_code) {
-
-                        // if it's the event's index, we set alternate to false
-                        // TODO : FIND A WAY TO CHANGE COLOR
-                        // TODO : TRY GLOBAL CALENDAR SETTING
-                        if (e.extendedProps.index !== event.extendedProps.index) {
-                            console.log('SETTING 1 LESSON AS MAIN')
-                            info.el.style.backgroundColor = eventColor;
-                            e.remove();
-                        }
+                    if (e.extendedProps.course_code === event.extendedProps.course_code &&
+                        e.extendedProps.index !== event.extendedProps.index) {
+                        info.el.style.backgroundColor = eventColor;
+                        e.remove();
                     }
                 }
-            };
+
+                // UPDATE THE TABLE BELOW WITH THE NEW COMBI OBJECT
+                updateInterestTable(combiObj, event.extendedProps.course_code);
+            }
+
+            function updateInterestTable(combiObj, courseCode) {
+                const clickedIndex = combiObj[courseCode];
+                const vacancies = document.getElementsByClassName('vacancies');
+                const indexes = document.getElementsByClassName('index');
+                const interesteds = document.getElementsByClassName('interested')
+
+                // FIND THE ROW AND RESET ITS VACANCY
+                for (let vacancy of vacancies) {
+                    if (vacancy.dataset.coursecode === courseCode) vacancy.innerText = updateIndexVacancies(clickedIndex);
+                }
+
+                // FIND THE ROW AND RESET ITS INDEX
+                for (let index of indexes) {
+                    if (index.dataset.coursecode === courseCode) index.innerText = clickedIndex;
+                }
+
+                // FIND THE ROW AND RESET ITS INTERESTED FLAG
+                for (let interested of interesteds) {
+                    if (interested.dataset.coursecode === courseCode){
+                        interested.checked = false;
+                        console.log('set interested to false');
+                    }
+                }
+            }
+
+            function updateIndexVacancies(clickedIndex) {
+                const indexVacancies = JSON.parse(sessionStorage.getItem('indexVacancies')) || {};
+                if (!(clickedIndex in indexVacancies)) indexVacancies[clickedIndex] = 200;
+                sessionStorage.setItem('indexVacancies', JSON.stringify(indexVacancies));
+                return indexVacancies[clickedIndex];
+            }
 
             /**
              * Handler for a successful POST request in getAlternateIndexes(...)
@@ -134,11 +165,8 @@
                 }
                 calendar.addEventSource(altEvents);
                 calendar.render();
-                // TODO - @TIMETABLE TEAM - FROM HERE, YOU GUYS HAVE A LIST[INDEX OBJECT] STORED IN alt_indexes
-                // TODO - REFER TO backend/entities.py/Index class FOR ALL ATTRIBUTES YOU MIGHT NEED
             }
 
-            // TODO - refactor as class state
             const removedEvents = [];
             const eventColor = "#FD79A8";
             const altEventColors = ["#555F61", "#6F7C80", "#8C979A", "#A7AFB2", "#C1C7C9"];
@@ -253,7 +281,8 @@
             });
             calendar.addEventSource(combinations[0]);
             calendar.render();
-        });
+        })
+        ;
 
         const [entry] = performance.getEntriesByType("navigation");
         if (entry["type"] === "back_forward") {
@@ -281,7 +310,11 @@
     <div id='wrap'>
         <div id='calendar-wrap'>
         </div>
+
+        <div>
+            {% include 'interest_table.html' %}
+        </div>
     </div>
-    <br/>
-    <br/>
+
+
 {% endblock %}

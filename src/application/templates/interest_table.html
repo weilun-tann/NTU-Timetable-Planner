@@ -1,0 +1,93 @@
+{% load static %}
+
+<link href='{% static 'css/interest_table.css' %}' rel='stylesheet'/>
+<script src='{% static 'js/interest_table.js' %}'></script>
+
+<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css'>
+<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js'></script>
+<script src='https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js'></script>
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
+
+<body>
+<div class='container'>
+    <div class='table-responsive'>
+        <table class='table table-bordered table-striped'>
+            <thead class='table__head'>
+
+            {# ADD TABLE HEADERS #}
+            <tr class='interest-table-row'>
+                <th><i aria-hidden='true'></i>📖 Course</th>
+                <th><i aria-hidden='true'></i>🔢 Index</th>
+                <th><i aria-hidden='true'></i>💨 Vacancies</th>
+                <th><i ria-hidden='true'></i>💘 Interested</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            {# ADD TABLE ROWS #}
+            {% for combination in combinations|slice:':1' %}
+                {% for course, index in combination.items %}
+                    <tr class='interest-table-row'>
+                        <td class='course'>{{ course.code }} {{ course.name }}</td>
+                        <td class='index' data-coursecode='{{ course.code }}'
+                            data-index='{{ index.index }}'>{{ index.index }}</td>
+                        <td class='vacancies' data-coursecode='{{ course.code }}'
+                            data-index='{{ index.index }}'>200
+                        </td>
+                        <td>{% include 'flip_switch.html' %}</td>
+                    </tr>
+                {% endfor %}
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        function getCombi() {
+            const combis = {}
+            {% for combination in combinations|slice:':1' %}
+                {% for course, index in combination.items %}
+                    combis["{{course.code}}"] = "{{index.index}}";
+                {% endfor %}
+            {% endfor %}
+            return combis;
+        }
+
+        function setInputEventListeners() {
+
+            // THESE ARE THE CHECKBOXES REPRESENTING INTEREST IN A COURSE
+            const inputs = document.getElementsByClassName('interested');
+
+            for (let input of inputs) {
+                input.addEventListener('change', function () {
+
+                        // THESE ARE THE VACANCY COUNTS FOR EACH COURSE
+                        const vacancies = document.getElementsByClassName('vacancies');
+                        for (let vacancy of vacancies) {
+                            if (input.dataset.coursecode === vacancy.dataset.coursecode &&
+                                input.dataset.index === vacancy.dataset.index) {
+                                if (this.checked) vacancy.innerText = parseInt(vacancy.innerText) - 1;
+                                else vacancy.innerText = parseInt(vacancy.innerText) + 1;
+                                updateIndexVacancies(input.dataset.index, vacancy.innerText);
+                            }
+                        }
+                    }
+                );
+            }
+        }
+
+        function updateIndexVacancies(index, vacancies) {
+            const indexVacancies = JSON.parse(sessionStorage.getItem('indexVacancies')) || {};
+            indexVacancies[index] = parseInt(vacancies);
+            sessionStorage.setItem('indexVacancies', JSON.stringify(indexVacancies));
+            return true;
+        }
+
+        // SET AN EVENT LISTENER FOR EACH CHECKBOX
+        setInputEventListeners();
+    });
+</script>

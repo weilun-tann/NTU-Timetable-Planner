@@ -1,0 +1,8 @@
+{% load static %}
+<link href="{% static 'css/flip_switch.css' %}" rel="stylesheet"/>
+
+<div class="flip-switch flip-switch-icon">
+    <input class='interested' data-coursecode="{{ course.code }}" data-index="{{ index.index }}"
+           type="checkbox" id="c2">
+    <label for="c2"></label>
+</div>
