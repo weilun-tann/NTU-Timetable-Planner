@@ -71,7 +71,7 @@ class Planner:
         return Planner.deconflict(filtered_indexes)
 
     @staticmethod
-    def deconflict(filtered_indexes: List[Index], clicked_index: Index) -> List[Index]:
+    def deconflict(filtered_indexes: List[Index]) -> List[Index]:
         booked_timings = set()
         deconflicted_indexes = []
         for idx in filtered_indexes:
