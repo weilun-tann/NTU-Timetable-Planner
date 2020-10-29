@@ -3,89 +3,90 @@
 <!DOCTYPE html>
 <html lang="en">
 
-	<!--LOAD YOUR STYLESHEETS HERE-->
-	<head>
-		<meta charset="UTF-8">
-		<title>{% block title %}{% endblock  %}</title>
-		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-		<link href="{% static 'css/navbarsearch.css' %}" rel="stylesheet"/>
-		
-		<script src='{% static "js/jquery-3.5.1.min.js" %}'></script>
-		<script src="{% static 'js/search.js' %}"></script>
-        <style>
-            .navbar {
-                z-index: 10000;
-                position: fixed;
-                top: 0px;
-                width: 100%;
-            }
-        </style>
-		{% block additional_styles %}
-		{% endblock %}
-	</head>
+<!--LOAD YOUR STYLESHEETS HERE-->
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="{% static 'css/navbarsearch.css' %}" rel="stylesheet"/>
 
-	{% block inline_scripts %}
-	{% endblock %}
+    <script src='{% static "js/jquery-3.5.1.min.js" %}'></script>
+    <script src="{% static 'js/search.js' %}"></script>
+    <style>
+        .navbar {
+            z-index: 10000;
+            position: fixed;
+            top: 0px;
+            width: 100%;
+        }
+    </style>
+    {% block additional_styles %}
+    {% endblock %}
+</head>
 
-	{# TODO - MOVE THIS INTO TIMETABLE.CSS#}
-	<style>
-		body {
-			font-size: 14px;
-			font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
-		}
-		.logout {
-			font-size: 18px;
-			color: #fff;
-			margin-right: 10px;
-		}
+{% block inline_scripts %}
+{% endblock %}
 
-		{% block inline_styles %}
+{# TODO - MOVE THIS INTO TIMETABLE.CSS#}
+<style>
+    body {
+        font-size: 14px;
+        font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+    }
 
-		{% endblock  %}
-	</style>
-	<body>
-		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-			<a class="navbar-brand" href="{% url 'profile' %}">Digist Timetable Planner</a>
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="collapse navbar-collapse" id="navbarText">
-			<ul class="navbar-nav mr-auto">
-				<li class="nav-item">
-					<a class="nav-link" href="{% url 'profile' %}">Profile</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="{% url 'search' %}">Plan</a>
-				</li>
-				<li>
-					<div class="container" id="testing">
-						<form action={% url "loading" %}>
-							<select data-multi-select-plugin name="course" id = "courseselect" multiple>
-									{% for coursecode, coursename in coursecodes.items %}
-										<option value="{{ coursecode }} {{ coursename }}"></option>
-									{% endfor %}
-							</select>
-						</form>
-					</div>
-				</li>
-			</ul>
+    .logout {
+        font-size: 18px;
+        color: #fff;
+        margin-right: 10px;
+    }
 
-			</div>
-				<span><a class="logout" href="{% url 'logout' %}">Logout<a/></span>
-			</nav>
-		{% block body_content %}
-		{% endblock  %}
+    {% block inline_styles %}
 
-		<script>
-			var selected;
-			document.addEventListener("mouseover", () => {
-				selected = document.getElementsByClassName("selected-wrapper");
-				
-				document.getElementById("testing").appendChild(selected[0].innerHTML);
-				
-				console.log(selected[0].innerHTML);
-			});
-			{% comment %} document.getElementById("testing").appendChild(selected[0].innerHTML); {% endcomment %}
-		</script>
-	</body>
+    {% endblock  %}
+</style>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="{% url 'profile' %}">Digist Timetable Planner</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
+            aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'profile' %}">Profile</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'search' %}">Plan</a>
+            </li>
+        </ul>
+    </div>
+    <span><a class="logout" href="{% url 'logout' %}">Logout<a/></span>
+</nav>
+
+<div class="container" id="testing">
+    <form action={% url "loading" %}>
+        <select data-multi-select-plugin name="course" id="courseselect" multiple>
+            {% for coursecode, coursename in coursecodes.items %}
+                <option value="{{ coursecode }} {{ coursename }}"></option>
+            {% endfor %}
+        </select>
+    </form>
+</div>
+{% block body_content %}
+{% endblock %}
+
+<script>
+    var selected;
+    document.addEventListener("mouseover", () => {
+        selected = document.getElementsByClassName("selected-wrapper");
+
+        document.getElementById("testing").appendChild(selected[0].innerHTML);
+
+        console.log(selected[0].innerHTML);
+    });
+    {% comment %} document.getElementById("testing").appendChild(selected[0].innerHTML); {% endcomment %}
+</script>
+</body>
 </html>
