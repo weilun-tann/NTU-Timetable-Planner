@@ -58,7 +58,7 @@
 					<a class="nav-link" href="{% url 'search' %}">Plan</a>
 				</li>
 				<li>
-					<div class="container">
+					<div class="container" id="testing">
 						<form action={% url "loading" %}>
 							<select data-multi-select-plugin name="course" id = "courseselect" multiple>
 									{% for coursecode, coursename in coursecodes.items %}
@@ -75,5 +75,17 @@
 			</nav>
 		{% block body_content %}
 		{% endblock  %}
+
+		<script>
+			var selected;
+			document.addEventListener("mouseover", () => {
+				selected = document.getElementsByClassName("selected-wrapper");
+				
+				document.getElementById("testing").appendChild(selected[0].innerHTML);
+				
+				console.log(selected[0].innerHTML);
+			});
+			{% comment %} document.getElementById("testing").appendChild(selected[0].innerHTML); {% endcomment %}
+		</script>
 	</body>
 </html>
