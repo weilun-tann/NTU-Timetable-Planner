@@ -14,6 +14,7 @@ from .models import Student
 from backend.json_parser import JSONParser
 from backend.entities import CustomJSONEncoder
 from .forms import UserLogIn
+from random import randint
 
 # TO CACHE PREVIOUSLY QUERIED COMBINATIONS
 timetable_cache = TimetableCombinationsCache()
@@ -37,7 +38,7 @@ def loginUser(request: HttpRequest) -> HttpResponse:
         else:
             messages.info(request, 'Username/Password incorrect')
     form = UserLogIn
-    return render(request, 'login.html', {'forms' : form })
+    return render(request, 'login.html', {'forms': form})
 
 
 def logoutUser(request):
@@ -62,7 +63,7 @@ def profile(request: HttpRequest) -> HttpResponse:
 
     coursecodes = JSONParser.get_course_names()
     user = request.user
-    return render(request, 'profile.html', {"user": user, "coursecodes" : coursecodes})
+    return render(request, 'profile.html', {"user": user, "coursecodes": coursecodes})
 
 
 @login_required(login_url='home')
@@ -77,8 +78,8 @@ def timetable(request: HttpRequest) -> HttpResponse:
     timetable_cache.set(course_indexes, combinations)
 
     # TODO - THIS IS FOR DEMO PURPOSES ONLY
-    combinations = combinations[:min(173, len(combinations))]
-    return render(request, 'timetable.html', {"combinations": combinations, "coursecodes" : coursecodes})
+    combinations = combinations[:min(randint(173, 187), len(combinations))]
+    return render(request, 'timetable.html', {"combinations": combinations, "coursecodes": coursecodes})
 
 
 @login_required(login_url='home')
