@@ -63,3 +63,12 @@
         margin-left: 2px;
     }
 }
+
+.vacancies {
+    opacity: 1;
+    transition: all 2s;
+}
+
+.vacancies.hide {
+    opacity: 0;
+}

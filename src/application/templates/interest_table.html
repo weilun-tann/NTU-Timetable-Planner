@@ -70,8 +70,8 @@
                         for (let vacancy of vacancies) {
                             if (input.dataset.coursecode === vacancy.dataset.coursecode &&
                                 input.dataset.index === vacancy.dataset.index) {
-                                if (this.checked) vacancy.innerText = parseInt(vacancy.innerText) - 1;
-                                else vacancy.innerText = parseInt(vacancy.innerText) + 1;
+                                const newVacancy = this.checked ? parseInt(vacancy.textContent) - 1 : parseInt(vacancy.textContent) + 1;
+                                animateChange(vacancy, newVacancy);
                                 updateIndexVacancies(input.dataset.index, vacancy.innerText);
                             }
                         }
@@ -85,6 +85,12 @@
             indexVacancies[index] = parseInt(vacancies);
             sessionStorage.setItem('indexVacancies', JSON.stringify(indexVacancies));
             return true;
+        }
+
+        function animateChange(element, value, timeout = 500) {
+            element.classList.add('hide');
+            setTimeout(() => element.textContent = value, timeout);
+            setTimeout(() => element.classList.remove('hide'), timeout);
         }
 
         // SET AN EVENT LISTENER FOR EACH CHECKBOX

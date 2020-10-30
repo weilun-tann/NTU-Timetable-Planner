@@ -1739,4 +1739,23 @@ body {
     text-align: center;
 }
 
+/* FADE ANIMATION UPDATES */
+.index {
+    opacity: 1;
+    transition: all 2s;
+}
+
+.index.hide {
+    opacity: 0;
+}
+
+.vacancies {
+    opacity: 1;
+    transition: all 2s;
+}
+
+.vacancies.hide {
+    opacity: 0;
+}
+
 

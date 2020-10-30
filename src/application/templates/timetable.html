@@ -109,20 +109,17 @@
 
                 // FIND THE ROW AND RESET ITS VACANCY
                 for (let vacancy of vacancies) {
-                    if (vacancy.dataset.coursecode === courseCode) vacancy.innerText = updateIndexVacancies(clickedIndex);
+                    if (vacancy.dataset.coursecode === courseCode) animateChange(vacancy, updateIndexVacancies(clickedIndex));
                 }
 
                 // FIND THE ROW AND RESET ITS INDEX
                 for (let index of indexes) {
-                    if (index.dataset.coursecode === courseCode) index.innerText = clickedIndex;
+                    if (index.dataset.coursecode === courseCode) animateChange(index, clickedIndex);
                 }
 
                 // FIND THE ROW AND RESET ITS INTERESTED FLAG
                 for (let interested of interesteds) {
-                    if (interested.dataset.coursecode === courseCode){
-                        interested.checked = false;
-                        console.log('set interested to false');
-                    }
+                    if (interested.dataset.coursecode === courseCode) interested.checked = false;
                 }
             }
 
@@ -132,6 +129,13 @@
                 sessionStorage.setItem('indexVacancies', JSON.stringify(indexVacancies));
                 return indexVacancies[clickedIndex];
             }
+
+            function animateChange(element, value, timeout = 500) {
+                element.classList.add('hide');
+                setTimeout(() => element.textContent = value, timeout);
+                setTimeout(() => element.classList.remove('hide'), timeout);
+            }
+
 
             /**
              * Handler for a successful POST request in getAlternateIndexes(...)
