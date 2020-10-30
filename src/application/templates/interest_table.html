@@ -72,7 +72,7 @@
                                 input.dataset.index === vacancy.dataset.index) {
                                 const newVacancy = this.checked ? parseInt(vacancy.textContent) - 1 : parseInt(vacancy.textContent) + 1;
                                 animateChange(vacancy, newVacancy);
-                                updateIndexVacancies(input.dataset.index, vacancy.innerText);
+                                updateIndexVacancies(input.dataset.index, newVacancy);
                                 updateInterestedIndexes(input.dataset.index, this.checked);
                             }
                         }

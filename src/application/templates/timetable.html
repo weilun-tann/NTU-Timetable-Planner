@@ -109,20 +109,26 @@
 
                 // FIND THE ROW AND RESET ITS VACANCY
                 for (let vacancy of vacancies) {
-                    if (vacancy.dataset.coursecode === courseCode) animateChange(vacancy, updateIndexVacancies(clickedIndex));
+                    if (vacancy.dataset.coursecode === courseCode) {
+                        vacancy.dataset.index = clickedIndex;
+                        animateChange(vacancy, updateIndexVacancies(clickedIndex));
+                    }
                 }
 
                 // FIND THE ROW AND RESET ITS INDEX
                 for (let index of indexes) {
-                    if (index.dataset.coursecode === courseCode) animateChange(index, clickedIndex);
+                    if (index.dataset.coursecode === courseCode) {
+                        index.dataset.index = clickedIndex;
+                        animateChange(index, clickedIndex);
+                    }
                 }
 
                 // FIND THE ROW AND RESET ITS INTERESTED FLAG
                 for (let interested of interesteds) {
                     if (interested.dataset.coursecode === courseCode) {
+                        interested.dataset.index = clickedIndex;
                         const interestedIndexes = JSON.parse(sessionStorage.getItem('interestedIndexes')) || [];
                         interested.checked = interestedIndexes.includes(clickedIndex);
-                        console.log(`index : ${clickedIndex}, interestedIndexes : ${interestedIndexes.entries()}`)
                     }
                 }
             }
