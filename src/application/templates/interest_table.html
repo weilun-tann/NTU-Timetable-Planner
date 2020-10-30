@@ -73,6 +73,7 @@
                                 const newVacancy = this.checked ? parseInt(vacancy.textContent) - 1 : parseInt(vacancy.textContent) + 1;
                                 animateChange(vacancy, newVacancy);
                                 updateIndexVacancies(input.dataset.index, vacancy.innerText);
+                                updateInterestedIndexes(input.dataset.index, this.checked);
                             }
                         }
                     }
@@ -85,6 +86,15 @@
             indexVacancies[index] = parseInt(vacancies);
             sessionStorage.setItem('indexVacancies', JSON.stringify(indexVacancies));
             return true;
+        }
+
+        function updateInterestedIndexes(index, isInterested) {
+            const interestedIndexes = JSON.parse(sessionStorage.getItem('interestedIndexes')) || [];
+            console.log(interestedIndexes);
+            if (isInterested && !(interestedIndexes.includes(index))) interestedIndexes.push(index);
+            if (!isInterested && interestedIndexes.includes(index)) interestedIndexes.splice(interestedIndexes.indexOf(index), 1);
+            console.log(interestedIndexes);
+            sessionStorage.setItem('interestedIndexes', JSON.stringify(interestedIndexes));
         }
 
         function animateChange(element, value, timeout = 500) {

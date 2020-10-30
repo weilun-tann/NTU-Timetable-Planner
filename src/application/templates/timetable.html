@@ -119,7 +119,11 @@
 
                 // FIND THE ROW AND RESET ITS INTERESTED FLAG
                 for (let interested of interesteds) {
-                    if (interested.dataset.coursecode === courseCode) interested.checked = false;
+                    if (interested.dataset.coursecode === courseCode) {
+                        const interestedIndexes = JSON.parse(sessionStorage.getItem('interestedIndexes')) || [];
+                        interested.checked = interestedIndexes.includes(clickedIndex);
+                        console.log(`index : ${clickedIndex}, interestedIndexes : ${interestedIndexes.entries()}`)
+                    }
                 }
             }
 
@@ -135,7 +139,6 @@
                 setTimeout(() => element.textContent = value, timeout);
                 setTimeout(() => element.classList.remove('hide'), timeout);
             }
-
 
             /**
              * Handler for a successful POST request in getAlternateIndexes(...)
