@@ -8,17 +8,48 @@
 {% block additional_styles %}
 	<link href="{% static 'css/profile.css' %}" rel="stylesheet"/>
 	<script src="{% static 'js/profile.js' %}"></script>
+	<script src="https://d3js.org/d3.v5.min.js"></script>
 {% endblock  %}
+
+{% block inline_styles %}
+	circle {
+		fill: white;
+	}
+
+	path {
+		fill: none;
+		stroke: white;
+		stroke-width: 5px;
+	}
+
+	text {
+		fill: white;
+	}
+{% endblock %}
 
 {% block body_content %}
 	<br/><br/><br/><br/><br/><br/><br/><br/>
-	<div id="photo"><img src= "{{s.img}}" ></div>
-	<br/>
-    <table>
-        <tr><td>Matric:</td><td>{{user.username}}</td></tr>
-        <tr><td>Name:</td><td>{{user.first_name}} {{ user.last_name }}</td></tr>
-{#        <tr><td>Study Yr:</td><td>{{user.study_yr}}</td></tr>#}
-{#        <tr><td>Course:</td><td>{{user.course}}</td></tr>#}
-        <tr><td>Module Passed:</td><td>{{user.courses_cleared}}</td></tr>
-    </table>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-8">
+				<svg id="tree"></svg>
+			</div>
+			<div class="col-3">
+				<div id="photo"><img src= "{{s.img}}" ></div>
+				<br/>
+				<table>
+						<tr><td>Matric:</td><td>{{user.username}}</td></tr>
+						<tr><td>Name:</td><td>{{user.first_name}} {{ user.last_name }}</td></tr>
+			{#        <tr><td>Study Yr:</td><td>{{user.study_yr}}</td></tr>#}
+			{#        <tr><td>Course:</td><td>{{user.course}}</td></tr>#}
+						<tr><td>Module Passed:</td><td>{{user.courses_cleared}}</td></tr>
+				</table>
+			</div>
+			<div class="col-1"></div>
+		</div>
+	
+	</div>
+	
+	<script src="{% static 'js/tree.js' %}"></script>
+
 {% endblock  %}

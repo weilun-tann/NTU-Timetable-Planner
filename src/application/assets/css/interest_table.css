@@ -1,0 +1,74 @@
+.table {
+    margin-top: 950px;
+}
+.table-responsive {
+    position: relative;
+    width: 80vw;
+}
+
+.table__head {
+    color: #FFF;
+    font-weight: 700;
+    background: #9b4085;
+    background: -moz-linear-gradient(-45deg, #9b4085 0%, #608590 100%);
+    background: -webkit-linear-gradient(-45deg, #9b4085 0%, #608590 100%);
+    background: linear-gradient(135deg, #9b4085 0%, #608590 100%);
+    white-space: nowrap;
+}
+
+.table-bordered td, .table-bordered th {
+    border: 0px solid #FFF;
+    color: #FFF;
+}
+
+.coin {
+    width: 8%;
+    margin-left: 5px;
+    -webkit-animation: spin 4s linear infinite;
+    -moz-animation: spin 4s linear infinite;
+    animation: spin 4s linear infinite;
+}
+
+@-moz-keyframes spin {
+    100% {
+        -moz-transform: rotate(360deg);
+    }
+}
+
+@-webkit-keyframes spin {
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@keyframes spin {
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+.interest-table-row {
+    white-space: nowrap;
+}
+
+@media screen and (max-width: 567px) {
+
+    .interest-table-row {
+        font-size: 12px;
+    }
+
+    .coin {
+        width: 15%;
+        margin-left: 2px;
+    }
+}
+
+.vacancies {
+    opacity: 1;
+    transition: all 2s;
+}
+
+.vacancies.hide {
+    opacity: 0;
+}
