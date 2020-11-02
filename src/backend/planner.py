@@ -40,7 +40,7 @@ class Planner:
         return res
 
     @staticmethod
-    def valid(combi: Dict[Course, Index], free_days: List[str]) -> bool:
+    def valid(combi: Dict[Course, Index], free_days: List[str]=[]) -> bool:
         intervals = Planner.get_intervals([index for index in combi.values()])
         return not Planner.clashes(intervals, free_days)
 
