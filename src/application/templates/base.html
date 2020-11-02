@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link href="{% static 'css/navbarsearch.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/base.css' %}" rel="stylesheet"/>
 
     <script src='{% static "js/jquery-3.5.1.min.js" %}'></script>
     <script src="{% static 'js/search.js' %}"></script>
@@ -57,9 +58,9 @@
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'profile' %}">Profile</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'search' %}">Plan</a>
-            </li>
+{#            <li class="nav-item">#}
+{#                <a class="nav-link" href="{% url 'search' %}">Plan</a>#}
+{#            </li>#}
         </ul>
     </div>
     <span><a class="logout" href="{% url 'logout' %}">Logout<a/></span>
@@ -67,6 +68,14 @@
 
 <div class="container" id="testing">
     <form action={% url "loading" %}>
+        <div class="free-day">
+            <span class="free-day-prompt">Would you like a free day?</span>
+            <label><input type='checkbox' name="MON"/> Mon </label>
+            <label><input type='checkbox' name="TUE"/> Tue</label>
+            <label><input type='checkbox' name="WED"/> Wed </label>
+            <label><input type='checkbox' name="THU"/> Thu </label>
+            <label><input type='checkbox' name="FRI"/> Fri </label>
+        </div>
         <select data-multi-select-plugin name="course" id="courseselect" multiple>
             {% for coursecode, coursename in coursecodes.items %}
                 <option value="{{ coursecode }} {{ coursename }}"></option>
