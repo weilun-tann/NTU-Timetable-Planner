@@ -73,9 +73,11 @@ def timetable(request: HttpRequest) -> HttpResponse:
     :return: The timetable page
     """
     coursecodes = JSONParser.get_course_names()
+    free_days = Planner.get_free_days(request.GET)
     course_indexes = [L.split()[0] for L in request.GET.getlist('course')]
-    combinations = timetable_cache.get(course_indexes) or Planner.generate_combis(course_indexes)
-    timetable_cache.set(course_indexes, combinations)
+    key = (tuple(free_days), tuple(course_indexes))
+    combinations = timetable_cache.get(key) or Planner.generate_combis(course_indexes, free_days)
+    timetable_cache.set(key, combinations)
 
     # TODO - THIS IS FOR DEMO PURPOSES ONLY
     combinations = combinations[:min(randint(173, 187), len(combinations))]
