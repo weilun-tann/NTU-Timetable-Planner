@@ -26,7 +26,11 @@ body {
 }
 
 .free-day input {
-    margin: 17px;
+    margin: 10px;
+}
+
+.free-day label {
+    padding-right: 10px;
 }
 
 .free-day label:hover {
