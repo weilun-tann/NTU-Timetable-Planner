@@ -18,8 +18,7 @@
     /* layout of immediate children */
     display: flex;
     flex-direction: column;
-
-    font-size: 1em
+    font-size: 1em;
 }
 
 .fc,
@@ -535,7 +534,7 @@ When it's NOT activated, the fc-button classes won't even be in the DOM.
 
 .fc .fc-bg-event .fc-event-title {
     margin: .5em;
-    font-size: 2.85em;
+    font-size: .85em;
     font-size: var(--fc-small-font-size, .85em);
     font-style: italic;
     font-weight: bold;
@@ -1705,3 +1704,61 @@ body {
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#3E1D6D', endColorstr='#092756', GradientType=1);
 }
 
+
+/* CUSTOM CSS EFFECTS */
+
+/* FONT SIZING FOR EVENT TIMING */
+.fc-event-time {
+    font-size: 1em;
+    font-weight: bold;
+    margin: 5px auto;
+    position: relative;
+}
+
+/* FONT SIZING FOR EVENT TITLE */
+.fc-event-title-container {
+    font-size: 1em;
+    font-weight: bold;
+    margin: 5px auto;
+    position: relative;
+    text-align: center;
+}
+
+/* ON-HOVER EFFECTS FOR EVENT CONTAINER */
+.fc-event-main-frame:hover {
+    background-color: #e84393;
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+/* COMBINATION COUNT ON TOP */
+#title {
+    font-family: "Palatino Linotype";
+    margin-bottom: -30px;
+    text-align: center;
+}
+
+/* FADE ANIMATION UPDATES */
+.index {
+    opacity: 1;
+    transition: all 2s;
+}
+
+.index.hide {
+    opacity: 0;
+}
+
+.vacancies {
+    opacity: 1;
+    transition: all 2s;
+}
+
+.vacancies.hide {
+    opacity: 0;
+}
+
+.testing {
+    position: relative;
+    margin-bottom: 100px;
+    padding-bottom: 100px;
+}

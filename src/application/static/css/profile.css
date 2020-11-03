@@ -13,16 +13,29 @@ body {
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3E1D6D', endColorstr='#092756',GradientType=1 );
 }
   
-table { width:400px;margin-left:auto;margin-right:auto;}
-table tr td { background:black; color:white; border:1px solid white; padding:10px; font-family:Cuprum; text-align:center;}
+table {
+    width:200px;
+    margin-top: 0px;
+    margin-left: 190px;
+}
+
+table tr td {
+    background:transparent;
+    color:white;
+    border:1px solid white;
+    padding:3px;
+    font-family:'Segoe UI', sans-serif;
+    text-align:center;
+}
 
 #photo {
 
-    margin:auto;
-    height:200px;
-    width:200px;
+    margin-top: -100px;
+    margin-left: 200px;
+    height:180px;
+    width:180px;
     border-radius:300px;
-    border:3px solid black;
+    border:3px solid white;
     overflow:hidden;
       
     }

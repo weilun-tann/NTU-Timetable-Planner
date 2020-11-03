@@ -25,28 +25,29 @@
 	text {
 		fill: white;
 	}
+
 {% endblock %}
 
 {% block body_content %}
 	<br/><br/><br/><br/><br/><br/><br/><br/>
 	<div class="container-fluid">
 		<div class="row">
-			<div class="col-8">
+			<div class="col-9">
 				<svg id="tree"></svg>
 			</div>
 			<div class="col-3">
-				<div id="photo"><img src= "{{s.img}}" ></div>
+				<div id="photo"><img src= "https://d1w2kd2gryahjv.cloudfront.net/SKHHOY6TeauCbnyvvokeL_rIOpY=/150x150/90882ad0159b40b29aa320962f288346/avatar_url_91602.jpg" ></div>
 				<br/>
 				<table>
-						<tr><td>Matric:</td><td>{{user.username}}</td></tr>
-						<tr><td>Name:</td><td>{{user.first_name}} {{ user.last_name }}</td></tr>
-			{#        <tr><td>Study Yr:</td><td>{{user.study_yr}}</td></tr>#}
-			{#        <tr><td>Course:</td><td>{{user.course}}</td></tr>#}
-						<tr><td>Module Passed:</td><td>{{user.courses_cleared}}</td></tr>
+					<tr><td>Matric No</td><td>U1922118L</td></tr>
+						<tr><td>Name</td><td>Aik Yu Chen</td></tr>
+				        <tr><td>Study Yr</td><td>2</td></tr>
+			           <tr><td>Course</td><td>Computer Science</td></tr>
+						{#<tr><td>Module Passed:</td><td>{{user.courses_cleared}}</td></tr>#}
 				</table>
 			</div>
-			<div class="col-1"></div>
 		</div>
+
 	
 	</div>
 	

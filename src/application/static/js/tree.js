@@ -1,6 +1,6 @@
 var svg = d3.select("#tree")
-	.attr("width", 1000).attr("height", 800)
-	.append("g").attr("transform", "translate(50, 50)");
+	.attr("width", 1500).attr("height", 800)
+	.append("g").attr("transform", "translate(350, 150)");
 
 var data = [
 	{"child": "business course", "parent": ""},
