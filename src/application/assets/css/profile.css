@@ -15,8 +15,6 @@ body {
   
 table {
     width:200px;
-    margin-top: 0px;
-    margin-left: 190px;
 }
 
 table tr td {
@@ -29,9 +27,6 @@ table tr td {
 }
 
 #photo {
-
-    margin-top: -100px;
-    margin-left: 200px;
     height:180px;
     width:180px;
     border-radius:300px;

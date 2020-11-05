@@ -74,17 +74,5 @@
 </div>
 {% block body_content %}
 {% endblock %}
-
-<script>
-    var selected;
-    document.addEventListener("mouseover", () => {
-        selected = document.getElementsByClassName("selected-wrapper");
-
-        document.getElementById("testing").appendChild(selected[0].innerHTML);
-
-        console.log(selected[0].innerHTML);
-    });
-    {% comment %} document.getElementById("testing").appendChild(selected[0].innerHTML); {% endcomment %}
-</script>
 </body>
 </html>

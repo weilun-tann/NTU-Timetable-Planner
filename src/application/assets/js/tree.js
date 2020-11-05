@@ -1,6 +1,6 @@
 var svg = d3.select("#tree")
 	.attr("width", 1500).attr("height", 800)
-	.append("g").attr("transform", "translate(350, 150)");
+	.append("g").attr("transform", "translate(0, 50)");
 
 var data = [
 	{"child": "business course", "parent": ""},
@@ -10,6 +10,9 @@ var data = [
 		{"child": "Financial Management", "parent": "business course"},
 		{"child": "Business Law", "parent": "business course"},
 			{"child": "Marketing", "parent": "Business Law"},
+			{"child": "Professional Attachment", "parent": "Business Law"},
+		{"child": "Foundation Excel", "parent": "business course"},
+			{"child": "Organisational Behavior & Design", "parent": "Foundation Excel"},
 ];
 
 var dataStruc = d3.stratify()
