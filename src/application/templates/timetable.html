@@ -223,13 +223,13 @@
             var div2 = document.createElement("div");
             div2.setAttribute("id", "innerCal");
 
-            /*var title = document.createElement("h1");
+            var title = document.createElement("h1");
             title.setAttribute("id", "title");
             var titleText = document.createTextNode(`${combinationNum + 1} of ${combinations.length}`);
             title.style.cssText = "margin-top: 80px;color:white";
-            title.appendChild(titleText);*/
+            title.appendChild(titleText);
 
-            //cal.appendChild(title);
+            cal.appendChild(title);
             cal.appendChild(div2);
             var parent = document.getElementById("calendar-wrap");
             parent.appendChild(cal);
@@ -272,8 +272,7 @@
                 headerToolbar: {
                     left: false,
                     center: false,
-                    right: false
-
+                    right: 'myPrevButton, myNextButton'
                 },
                 events: [],
                 allDaySlot: false,

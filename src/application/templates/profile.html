@@ -15,7 +15,9 @@
 	{% comment %} circle {
 		fill: green;
 	} {% endcomment %}
-
+	{% comment %} add hover, selection to circle {% endcomment %}
+	{% comment %} add selection to array {% endcomment %}
+	{% comment %} generate timetable from tree selection {% endcomment %}
 	path {
 		fill: none;
 		stroke: white;
@@ -63,10 +65,10 @@
 	
 	</div>
 	<script>
-		let x = "{{cleared}}";
+		let cleared = "{{cleared}}";
 		const regex = /(&#x27;)|(\[)|(\])|( )/g;
-		let y = x.replace(regex, "");
-		let taken = y.split(",");
+		let clearedClean = cleared.replace(regex, "");
+		let taken = clearedClean.split(",");
 	</script>
 	<script src="{% static 'js/tree.js' %}"></script>
 	
