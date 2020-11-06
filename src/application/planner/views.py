@@ -87,7 +87,7 @@ def profile(request: HttpRequest) -> HttpResponse:
     for remove in delete:
         del coursecodes[remove]
 
-    return render(request, 'profile.html', {"user": user, "coursecodes": coursecodes, "coursecodesfull" : coursecodesfull, "prerequisite" : prerequisite})
+    return render(request, 'profile.html', {"user": user, "coursecodes": coursecodes, "coursecodesfull" : coursecodesfull, "prerequisite" : prerequisite, "cleared": cleared})
 
 
 @login_required(login_url='home')

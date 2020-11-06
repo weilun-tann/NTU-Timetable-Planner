@@ -17,8 +17,8 @@ let data = [
 		{"child": "AB1401", "parent": "Business Course"},
 			{"child": "GC0001", "parent": "AB1401"},
 			{"child": "AB0602", "parent": "AB1401"},
-		{"child": "AB1402", "parent": "Business Course"},
-			{"child": "BS2407", "parent": "AB1402"},
+		{"child": "AB1202", "parent": "Business Course"},
+			{"child": "BS2407", "parent": "AB1202"},
 ];
 
 let dataStruc = d3.stratify()
@@ -44,8 +44,6 @@ connections.enter().append("path")
 
 let circles = svg.append('g').selectAll("circle")
 	.data(info.descendants());
-
-let taken = ["AD1101", "AB1301", "AB1402", "AB1401"];
 
 circles.enter().append("circle")
 	.attr("cx", function(d) {return d.x;})

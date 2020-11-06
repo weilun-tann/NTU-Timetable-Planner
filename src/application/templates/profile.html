@@ -55,14 +55,19 @@
 						<tr><td>Name</td><td>Aik Yu Chen</td></tr>
 				        <tr><td>Study Yr</td><td>2</td></tr>
 			           <tr><td>Course</td><td>Computer Science</td></tr>
-						{#<tr><td>Module Passed:</td><td>{{user.courses_cleared}}</td></tr>#}
+						<tr><td>Module Passed:</td><td>{{user.courses_cleared}}</td></tr>
 				</table>
 			</div>
 		</div>
 
 	
 	</div>
-	
+	<script>
+		let x = "{{cleared}}";
+		const regex = /(&#x27;)|(\[)|(\])|( )/g;
+		let y = x.replace(regex, "");
+		let taken = y.split(",");
+	</script>
 	<script src="{% static 'js/tree.js' %}"></script>
-
+	
 {% endblock  %}
