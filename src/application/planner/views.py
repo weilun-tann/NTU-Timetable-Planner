@@ -85,7 +85,8 @@ def profile(request: HttpRequest) -> HttpResponse:
     for c in cleared:
         delete.append(c)
     for remove in delete:
-        del coursecodes[remove]
+        if remove in coursecodes:
+            del coursecodes[remove]
 
     return render(request, 'profile.html', {"user": user, "coursecodes": coursecodes, "coursecodesfull" : coursecodesfull, "prerequisite" : prerequisite, "cleared": cleared})
 
