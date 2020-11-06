@@ -79,9 +79,11 @@ def profile(request: HttpRequest) -> HttpResponse:
                             break
                 if count == len(prerequisite[key]):
                     print("correct")
+                    count = 0
                 else:
                     print(len(prerequisite[key]))
                     delete.append(key)
+                    count = 0
     for c in cleared:
         delete.append(c)
     for remove in delete:
