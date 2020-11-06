@@ -1,8 +1,8 @@
-var svg = d3.select("#tree")
+let svg = d3.select("#tree")
 	.attr("width", 1500).attr("height", 800)
 	.append("g").attr("transform", "translate(0, 50)");
 
-var data = [
+let data = [
 	{"child": "Business Course", "parent": "", "root": "root"},
 		{"child": "AD1101", "parent": "Business Course"},
 			{"child": "AD2101", "parent": "AD1101"},
@@ -21,17 +21,17 @@ var data = [
 			{"child": "BS2407", "parent": "AB1402"},
 ];
 
-var dataStruc = d3.stratify()
+let dataStruc = d3.stratify()
 	.id(function(d) {return d.child;})
 	.parentId(function(d) {return d.parent;})
 	(data);
 
-var treeStruc = d3.tree().size([1000, 500]);
-var info = treeStruc(dataStruc);
+let treeStruc = d3.tree().size([1000, 500]);
+let info = treeStruc(dataStruc);
 //console.log(info.descendants());
 //console.log(info.links());
 
-var connections = svg.append('g').selectAll("path")
+let connections = svg.append('g').selectAll("path")
 	.data(info.links());
 
 connections.enter().append("path")
@@ -42,10 +42,10 @@ connections.enter().append("path")
 		d.target.x + ',' + d.target.y;
 	});
 
-var circles = svg.append('g').selectAll("circle")
+let circles = svg.append('g').selectAll("circle")
 	.data(info.descendants());
 
-const taken = ["AD1101", "AB1301", "AB1402", "AB1401"];
+let taken = ["AD1101", "AB1301", "AB1402", "AB1401"];
 
 circles.enter().append("circle")
 	.attr("cx", function(d) {return d.x;})
@@ -64,7 +64,7 @@ circles.enter().append("circle")
 		return "notCleared";
 	});
 
-var names = svg.append('g').selectAll("text")
+let names = svg.append('g').selectAll("text")
 	.data(info.descendants());
 
 names.enter().append("text")
