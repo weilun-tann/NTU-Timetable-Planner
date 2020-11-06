@@ -13,11 +13,11 @@ body {
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3E1D6D', endColorstr='#092756',GradientType=1 );
 }
   
-table {
+#tblInfo {
     width:200px;
 }
 
-table tr td {
+#tblInfo tr td {
     background:transparent;
     color:white;
     border:1px solid white;
