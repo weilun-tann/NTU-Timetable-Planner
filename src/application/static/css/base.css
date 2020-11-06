@@ -60,10 +60,11 @@ body {
         -webkit-mask-position: -50%;
     }
 }
-form{
-    position:relative;
-    top:-50px;
-    z-index:1;
+
+form {
+    position: relative;
+    top: -50px;
+    z-index: 1;
 }
 
 body {
@@ -72,7 +73,18 @@ body {
 }
 
 .logout {
-        font-size: 18px;
-        color: #fff;
-        margin-right: 10px;
+    font-size: 18px;
+    color: #fff;
+    margin-right: 10px;
+}
+
+.welcome-message {
+    font-size: 18px;
+    color: #fff;
+    margin-right: 20px;
+}
+
+.welcome-message:hover {
+    text-decoration: underline;
+    cursor: default;
 }
