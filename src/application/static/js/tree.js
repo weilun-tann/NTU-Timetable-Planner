@@ -3,7 +3,7 @@ var svg = d3.select("#tree")
 	.append("g").attr("transform", "translate(0, 50)");
 
 var data = [
-	{"child": "Business Course", "parent": ""},
+	{"child": "Business Course", "parent": "", "root": "root"},
 		{"child": "AD1101", "parent": "Business Course"},
 			{"child": "AD2101", "parent": "AD1101"},
 			{"child": "BC2402", "parent": "AD1101"},
@@ -45,11 +45,24 @@ connections.enter().append("path")
 var circles = svg.append('g').selectAll("circle")
 	.data(info.descendants());
 
+const taken = ["AD1101", "AB1301", "AB1402", "AB1401"];
+
 circles.enter().append("circle")
 	.attr("cx", function(d) {return d.x;})
 	.attr("cy", function(d) {return d.y;})
 	.attr('r', 10)
-	.attr("id", function(d) {return d.data.child;});
+	.attr("id", function(d) {
+		if (d.data.root) {
+			return d.data.root;
+		}
+		return d.data.child;
+	})
+	.attr("class", function(d) {
+		if (taken.includes(d.data.child)) {
+			return "alreadyCleared";
+		}
+		return "notCleared";
+	});
 
 var names = svg.append('g').selectAll("text")
 	.data(info.descendants());
@@ -64,5 +77,5 @@ document.getElementById("tree").addEventListener("click", function(event) {
 	alert(event.target.id);
 })
 
-var lengthOfData = Object.keys(data).length;
+
 

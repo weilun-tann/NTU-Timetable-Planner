@@ -12,9 +12,9 @@
 {% endblock  %}
 
 {% block inline_styles %}
-	circle {
+	{% comment %} circle {
 		fill: green;
-	}
+	} {% endcomment %}
 
 	path {
 		fill: none;
@@ -23,6 +23,18 @@
 	}
 
 	text {
+		fill: white;
+	}
+
+	.alreadyCleared {
+		fill: green;
+	}
+
+	.notCleared {
+		fill: red;
+	}
+
+	#root {
 		fill: white;
 	}
 
