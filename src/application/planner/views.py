@@ -61,9 +61,33 @@ def profile(request: HttpRequest) -> HttpResponse:
     # s1.mods_cleared = "CZ1011", "CZ1012", "CZ1007", "MH1812"
     # s1.img = "https://cdn.dribbble.com/users/935504/screenshots/3123811/artboard.png"
 
+    prerequisite = {'CZ2001': ['CZ1007', 'MH1812', 'CZ1011'], 'CZ3003': ['CZ2006']}
     coursecodes = JSONParser.get_course_names()
+    coursecodesfull = JSONParser.get_course_names()
     user = request.user
-    return render(request, 'profile.html', {"user": user, "coursecodes": coursecodes})
+    cleared = user.courses_cleared.split(", ")
+    count = 0
+    delete = []
+    for key, values in prerequisite.items():
+        for a in coursecodes:
+            if a == key:
+                for c in cleared:
+                    for i in prerequisite[key]:
+                        if i == c:
+                            print("HI")
+                            count = count + 1
+                            break
+                if count == len(prerequisite[key]):
+                    print("correct")
+                else:
+                    print(len(prerequisite[key]))
+                    delete.append(key)
+    for c in cleared:
+        delete.append(c)
+    for remove in delete:
+        del coursecodes[remove]
+
+    return render(request, 'profile.html', {"user": user, "coursecodes": coursecodes, "coursecodesfull" : coursecodesfull, "prerequisite" : prerequisite})
 
 
 @login_required(login_url='home')
@@ -78,6 +102,7 @@ def timetable(request: HttpRequest) -> HttpResponse:
     key = (tuple(free_days), tuple(course_indexes))
     combinations = timetable_cache.get(key) or Planner.generate_combis(course_indexes, free_days)
     timetable_cache.set(key, combinations)
+
 
     # TODO - THIS IS FOR DEMO PURPOSES ONLY
     combinations = combinations[:min(randint(173, 187), len(combinations))]
