@@ -71,9 +71,27 @@ names.enter().append("text")
 	.attr('y', function(d) {return d.y + 4;})
 	.attr("id", function(d) {return d.data.child;});
 
-document.getElementById("tree").addEventListener("click", function(event) {
-	alert(event.target.id);
-})
+	let selected = [];
+	let allCircles = document.getElementsByTagName("circle");
+	let index;
+	let selectionDisplay = document.getElementById("selectedCoursesFromTree");
+
+	for (let q = 0; q < allCircles.length; q++) {
+		if (allCircles[q].id == "root" || taken.includes(allCircles[q].id)) {
+			continue;
+		}
+		allCircles[q].classList.add("hoverEffects");
+		allCircles[q].addEventListener("click", function(event) {
+			if (selected.includes(event.target.id)) {
+				index = selected.indexOf(event.target.id);
+				selected.splice(index, 1);
+			} else {
+				selected.push(event.target.id);
+			}
+			console.log(selected);
+			selectionDisplay.innerHTML = selected;
+		})
+	}
 
 
 

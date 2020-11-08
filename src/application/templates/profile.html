@@ -40,13 +40,27 @@
     fill: white;
     }
 
+		.container-fluid {
+			color: white;
+		}
+
 {% endblock %}
 
 {% block body_content %}
-    <div class="tree-div">
-        <svg id="tree"></svg>
+    <div class="container-fluid" style="margin-top: 150px;">
+			<div class="row">
+				<div class="col-8">
+					<svg id="tree"></svg>
+				</div>
+				<div class="col-4">
+					<h1>Selected Courses</h1>
+					<p id="selectedCoursesFromTree"></p>
+					<form action={% url "loading" %} style="top:0px;">
+							<input type="submit" value="Create Timetable" class="btn btn-primary btn-block btn-large">
+					</form>
+				</div>
+			</div>
     </div>
-    <script src="{% static 'js/tree.js' %}"></script>
 
     <script>
         let cleared = "{{cleared}}";
