@@ -78,6 +78,8 @@ let allCircles = document.getElementsByTagName("circle");
 let index;
 let selectionDisplay = document.getElementById("selectedCoursesFromTree");
 
+console.log(selected);
+
 for (let q = 0; q < allCircles.length; q++) {
 	if (allCircles[q].id == "root" || taken.includes(allCircles[q].id) || allCircles[q].classList.contains("cannotTake")) {
 		continue;
