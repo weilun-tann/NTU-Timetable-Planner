@@ -102,30 +102,17 @@ for (let q = 0; q < allCircles.length; q++) {
     }
     allCircles[q].classList.add("hoverEffects");
     allCircles[q].addEventListener("click", function (event) {
-        if (selected.includes(event.target.id)) {
+				let selectedCircle = document.getElementById(event.target.id);
+				if (selected.includes(event.target.id)) {
             index = selected.indexOf(event.target.id);
-            selected.splice(index, 1);
+						selected.splice(index, 1);
+						selectedCircle.style.fill = "#2980b9";
         } else {
-            selected.push(event.target.id);
+						selected.push(event.target.id);
+						selectedCircle.style.fill = "#55efc4";
         }
         console.log(selected);
         selectionDisplay.innerHTML = selected;
-
-        // UPDATE THE CURRENT SELECTION OF CIRCLES
-        const circle = document.getElementById(event.target.id);
-        changeCircleColour(circle);
-    });
-}
-
-function changeCircleColour(circle) {
-    if (selectedCircles.includes(circle.id)) {
-        selectedCircles = selectedCircles.filter(e => e !== circle.id);
-        if (circle.classList.contains('alreadyCleared')) circle.style.fill = "#16a085";
-        if (circle.classList.contains('canTake')) circle.style.fill = "#2980b9";
-        if (circle.classList.contains('cannotTake')) circle.style.fill = "#7f8c8d";
-    } else {
-        selectedCircles.push(circle.id);
-        circle.style.fill = "#55efc4";
-    }
+		});
 }
 
