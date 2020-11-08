@@ -11,64 +11,67 @@
     <script src="https://d3js.org/d3.v5.min.js"></script>
 {% endblock %}
 
-{% block inline_styles %}
-    {% comment %} circle {
-        fill: green;
-        } {% endcomment %}
-    {% comment %} add hover, selection to circle {% endcomment %}
-    {% comment %} add selection to array {% endcomment %}
-    {% comment %} generate timetable from tree selection {% endcomment %}
-    path {
-    	fill: none;
-    	stroke: white;
-    	stroke-width: 5px;
-    }
-
-    text {
-    	fill: white;
-    }
-
-    .alreadyCleared {
-    	fill: #16a085;
-    }
-
-		.canTake {
-			fill: #2980b9;
-		}
-
-		.canTake:hover {
-			fill: #55efc4 !important;
-		}
-
-    .cannotTake {
-    	fill: #7f8c8d;
-    }
-
-    #root {
-    	fill: white;
-    }
-
-		.container-fluid {
-			color: white;
-		}
-
-{% endblock %}
+{#{% block inline_styles %}#}
+{#    {% comment %} circle {#}
+{#        fill: green;#}
+{#        } {% endcomment %}#}
+{#    {% comment %} add hover, selection to circle {% endcomment %}#}
+{#    {% comment %} add selection to array {% endcomment %}#}
+{#    {% comment %} generate timetable from tree selection {% endcomment %}#}
+{#    path {#}
+{#    	fill: none;#}
+{#    	stroke: white;#}
+{#    	stroke-width: 5px;#}
+{#    }#}
+{##}
+{#    text {#}
+{#    	fill: white;#}
+{#    }#}
+{##}
+{#    .alreadyCleared {#}
+{#    	fill: #16a085;#}
+{#    }#}
+{##}
+{#		.canTake {#}
+{#			fill: #2980b9;#}
+{#		}#}
+{##}
+{#		.canTake:hover {#}
+{#			fill: #55efc4 !important;#}
+{#		}#}
+{##}
+{#    .cannotTake {#}
+{#    	fill: #7f8c8d;#}
+{#    }#}
+{##}
+{#    #root {#}
+{#    	fill: white;#}
+{#    }#}
+{##}
+{#		.container-fluid {#}
+{#			color: white;#}
+{#		}#}
+{#{% endblock %}#}
 
 {% block body_content %}
     <div class="container-fluid" style="margin-top: 150px;">
-			<div class="row">
-				<div class="col-8">
-					<svg id="tree"></svg>
-				</div>
-				<div class="col-4">
-					<h1>Selected Courses</h1>
-					<p id="selectedCoursesFromTree"></p>
-					<form action={% url "loading" %} style="top:0px;" onsubmit="sendCourseCodesToTimetable()" method="POST">
-							{% csrf_token %}
-							<input type="submit" value="Create Timetable" class="btn btn-primary btn-block btn-large">
-					</form>
-				</div>
-			</div>
+        <div class="tree">
+            <svg id="tree"></svg>
+        </div>
+        <div class="tree-form-div">
+            <h1>Selected Courses</h1>
+            <p id="selectedCoursesFromTree"></p>
+            {#            <form action={% url "loading" %} style="top:0px;" onsubmit="sendCourseCodesToTimetable()" method="POST">#}
+            {#                {% csrf_token %}#}
+            {#                <input type="submit" value="Create Timetable" class="btn btn-primary btn-block btn-large">#}
+            {#            </form>#}
+            {#            <button type="submit" value="Create Timetable" class="btn btn-primary btn-block btn-large"#}
+            {#                    onclick="sendCourseCodesToTimetable()">SUBMIT#}
+            {#            </button>#}
+            <form id="tree-form" action={% url "loading" %}>
+                <input type="submit" class="btn btn-primary btn-block btn-large">
+            </form>
+        </div>
     </div>
 
     <script>
@@ -76,17 +79,29 @@
         const regex = /(&#x27;)|(\[)|(\])|( )/g;
         let clearedClean = cleared.replace(regex, "");
         let taken = clearedClean.split(",");
-				taken.push("Business Course");
+        taken.push("Business Course");
 
-				function sendCourseCodesToTimetable() {
-					$.ajax({
-						url: "{% url "timetable" %}",
-						type: "POST",
-						data: selected,
-						processData: false,
-						contentType: false
-					});
-				}
+
+        function sendCourseCodesToTimetable() {
+            $.ajax({
+                url: "/full_course_names",
+                type: "GET",
+                data: {"course_codes": JSON.stringify(selected)},
+                success: function (data) {
+                    const fullCourseNames = JSON.parse(data["full_course_names"]);
+                    console.log(`fullCourseNames : ${fullCourseNames}`)
+                    $.ajax({
+                        url: "/timetable",
+                        type: "GET",
+                        data: {course: fullCourseNames},
+                        success: data => addCoursesAsFormInput(fullCourseNames),
+                        error: (x, y, z) => console.log(x, y, z),
+                    });
+                }
+            });
+        }
+
+
     </script>
     <script src="{% static 'js/tree.js' %}"></script>
 

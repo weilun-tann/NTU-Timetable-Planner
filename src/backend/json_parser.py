@@ -55,6 +55,11 @@ class JSONParser:
         return {k: v['name'] for k, v in DATA.items()}
 
     @staticmethod
+    def get_full_course_names(course_codes: List[str]) -> List[str]:
+        course_names = JSONParser.get_course_names()
+        return [f"{code} {course_names.get(code)}" for code in course_codes]
+
+    @staticmethod
     def get_date(details: Dict) -> str:
         curr_day = datetime.today().weekday()  # 0 - MON, 6 - SUN
         curr_date = datetime.today()

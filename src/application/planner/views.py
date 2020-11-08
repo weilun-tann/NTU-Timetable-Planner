@@ -87,7 +87,9 @@ def profile(request: HttpRequest) -> HttpResponse:
         if remove in coursecodes:
             del coursecodes[remove]
 
-    return render(request, 'profile.html', {"user": user, "coursecodes": coursecodes, "coursecodesfull" : coursecodesfull, "prerequisite" : prerequisite, "cleared": cleared})
+    return render(request, 'profile.html',
+                  {"user": user, "coursecodes": coursecodes, "coursecodesfull": coursecodesfull,
+                   "prerequisite": prerequisite, "cleared": cleared})
 
 
 @login_required(login_url='home')
@@ -98,12 +100,11 @@ def timetable(request: HttpRequest) -> HttpResponse:
     """
     coursecodes = JSONParser.get_course_names()
     free_days = Planner.get_free_days(request.GET)
-    course_indexes = [L.split()[0] for L in request.GET.getlist('course')]
-    course_code_tree = request.POST.get("selected[]")
+    courses = request.GET.getlist('course') or request.GET.getlist('course[]')
+    course_indexes = [L.split()[0] for L in courses]
     key = (tuple(free_days), tuple(course_indexes))
-    combinations = timetable_cache.get(key) or Planner.generate_combis(course_indexes, free_days) or Planner.generate_combis(course_code_tree, free_days)
+    combinations = timetable_cache.get(key) or Planner.generate_combis(course_indexes, free_days)
     timetable_cache.set(key, combinations)
-
 
     # TODO - THIS IS FOR DEMO PURPOSES ONLY
     combinations = combinations[:min(randint(173, 187), len(combinations))]
@@ -116,6 +117,13 @@ def alt_indexes(request: HttpRequest) -> HttpResponse:
     combi = json.loads(request.POST["combi"])
     alt_idxes = Planner.get_alt_indexes(clicked_index, combi)
     return JsonResponse({'alt_indexes': json.dumps(alt_idxes, cls=CustomJSONEncoder)})
+
+
+@login_required(login_url='home')
+def get_full_course_names(request: HttpRequest) -> HttpResponse:
+    course_codes = json.loads(request.GET["course_codes"])
+    full_course_names = JSONParser.get_full_course_names(course_codes)
+    return JsonResponse({'full_course_names': json.dumps(full_course_names, cls=CustomJSONEncoder)})
 
 
 @login_required(login_url='home')

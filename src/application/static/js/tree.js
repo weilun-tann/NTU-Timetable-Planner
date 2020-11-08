@@ -1,5 +1,5 @@
 let svg = d3.select("#tree")
-    .attr("width", 1500).attr("height", 800)
+    .attr("width", 1500).attr("height", 700)
     .append("g").attr("transform", "translate(0, 50)");
 
 let data = [
@@ -94,7 +94,6 @@ let allCircles = document.getElementsByTagName("circle");
 let index;
 let selectionDisplay = document.getElementById("selectedCoursesFromTree");
 let selectedCircles = [];
-console.log(selected);
 
 for (let q = 0; q < allCircles.length; q++) {
     if (allCircles[q].id == "root" || taken.includes(allCircles[q].id) || allCircles[q].classList.contains("cannotTake")) {
@@ -102,17 +101,45 @@ for (let q = 0; q < allCircles.length; q++) {
     }
     allCircles[q].classList.add("hoverEffects");
     allCircles[q].addEventListener("click", function (event) {
-				let selectedCircle = document.getElementById(event.target.id);
-				if (selected.includes(event.target.id)) {
+        let selectedCircle = document.getElementById(event.target.id);
+        if (selected.includes(event.target.id)) {
             index = selected.indexOf(event.target.id);
-						selected.splice(index, 1);
-						selectedCircle.style.fill = "#2980b9";
+            selected.splice(index, 1);
+            selectedCircle.style.fill = "#2980b9";
+            changeFormInput(event.target.id, false);
         } else {
-						selected.push(event.target.id);
-						selectedCircle.style.fill = "#55efc4";
+            selected.push(event.target.id);
+            selectedCircle.style.fill = "#55efc4";
+            changeFormInput(event.target.id, true);
         }
-        console.log(selected);
         selectionDisplay.innerHTML = selected;
-		});
+    });
+}
+
+function changeFormInput(courseCode, add) {
+    $.ajax({
+        url: "/full_course_names",
+        type: "GET",
+        data: {"course_codes": JSON.stringify([courseCode])},
+        success: function (data) {
+            const fullCourseName = JSON.parse(data["full_course_names"]);
+            console.log(`fullCourseName : ${fullCourseName}`);
+            add ? addCourseAsFormInput(fullCourseName) : removeCourseFromFormInput(fullCourseName);
+        },
+        error: function (x, y, z) {
+            console.log(`ERROR : ${x} | ${y} | ${z}`);
+        }
+    });
+}
+
+function addCourseAsFormInput(course) {
+    $("#tree-form").append(`<input id='${course}' name='course' value='${course}'>`);
+}
+
+function removeCourseFromFormInput(course) {
+    // TODO : REMOVING THE FIELD BELOW AFTER CLICKING / UNSELECTING
+    console.log(`REMOVING ${course}`);
+    console.log(document.getElementById(course));
+    $(course).remove();
 }
 

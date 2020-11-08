@@ -40,3 +40,37 @@ body {
     cursor: pointer;
     fill: #81ecec;
 }
+
+path {
+    fill: none;
+    stroke: white;
+    stroke-width: 5px;
+}
+
+text {
+    fill: white;
+}
+
+.alreadyCleared {
+    fill: #16a085;
+}
+
+.canTake {
+    fill: #2980b9;
+}
+
+.canTake:hover {
+    fill: #55efc4 !important;
+}
+
+.cannotTake {
+    fill: #7f8c8d;
+}
+
+#root {
+    fill: white;
+}
+
+.container-fluid {
+    color: white;
+}
