@@ -90,8 +90,21 @@ names.enter().append("text")
 			}
 			console.log(selected);
 			selectionDisplay.innerHTML = selected;
+
+			// UPDATE THE CURRENT SELECTION OF CIRCLES
+			const circle = document.getElementById(event.target.id);
+			changeCircleColour(circle);
 		})
 	}
 
+function changeCircleColour(circle) {
+    if (selectedCircles.includes(circle.id)) {
+        selectedCircles = selectedCircles.filter(e => e !== circle.id);
+        if (circle.classList.contains("notCleared")) circle.style.fill = "red";
+    } else {
+        selectedCircles.push(circle.id);
+        circle.style.fill = "#55efc4";
+    }
+}
 
 

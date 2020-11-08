@@ -30,21 +30,19 @@ body {
     text-align: center;
 }
 
-#photo {
-    height: 180px;
-    width: 180px;
-    border-radius: 300px;
-    border: 3px solid white;
-    overflow: hidden;
-
-}
-
-#photo img {
-    height: 200px;
-    width: 200px;
-}
-
+/*POSITION THE TREE DIV*/
 .tree-div {
     margin-top: 200px;
     margin-left: 400px;
+}
+
+/*STYLING THE CIRCLES ON THE GRAPH*/
+circle {
+    width: 100px;
+    height: 100px;
+}
+
+circle:hover {
+    cursor: pointer;
+    fill: #81ecec;
 }
