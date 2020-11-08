@@ -19,25 +19,29 @@
     {% comment %} add selection to array {% endcomment %}
     {% comment %} generate timetable from tree selection {% endcomment %}
     path {
-    fill: none;
-    stroke: white;
-    stroke-width: 5px;
+    	fill: none;
+    	stroke: white;
+    	stroke-width: 5px;
     }
 
     text {
-    fill: white;
+    	fill: white;
     }
 
     .alreadyCleared {
-    fill: green;
+    	fill: #16a085;
     }
 
-    .notCleared {
-    fill: red;
+		.canTake {
+			fill: #2980b9;
+		}
+
+    .cannotTake {
+    	fill: #7f8c8d;
     }
 
     #root {
-    fill: white;
+    	fill: white;
     }
 
 		.container-fluid {
@@ -55,7 +59,8 @@
 				<div class="col-4">
 					<h1>Selected Courses</h1>
 					<p id="selectedCoursesFromTree"></p>
-					<form action={% url "loading" %} style="top:0px;">
+					<form action={% url "loading" %} style="top:0px;" onsubmit="sendCourseCodesToTimetable()" method="POST">
+							{% csrf_token %}
 							<input type="submit" value="Create Timetable" class="btn btn-primary btn-block btn-large">
 					</form>
 				</div>
@@ -67,6 +72,17 @@
         const regex = /(&#x27;)|(\[)|(\])|( )/g;
         let clearedClean = cleared.replace(regex, "");
         let taken = clearedClean.split(",");
+				taken.push("Business Course");
+
+				function sendCourseCodesToTimetable() {
+					$.ajax({
+						url: "{% url "timetable" %}",
+						type: "POST",
+						data: selected,
+						processData: false,
+						contentType: false
+					});
+				}
     </script>
     <script src="{% static 'js/tree.js' %}"></script>
 
