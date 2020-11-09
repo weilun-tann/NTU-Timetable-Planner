@@ -64,7 +64,7 @@ class JSONParser:
         curr_day = datetime.today().weekday()  # 0 - MON, 6 - SUN
         curr_date = datetime.today()
         day_date = JSONParser.get_day_date_map(curr_day, curr_date)
-        return day_date[details["day"]]
+        return day_date.get(details["day"], "")
 
     @staticmethod
     def get_day_date_map(curr_day: int, curr_date: datetime) -> Dict[str, str]:
