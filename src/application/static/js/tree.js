@@ -123,11 +123,7 @@ function changeFormInput(courseCode, add) {
         data: {"course_codes": JSON.stringify([courseCode])},
         success: function (data) {
             const fullCourseName = JSON.parse(data["full_course_names"]);
-            console.log(`fullCourseName : ${fullCourseName}`);
             add ? addCourseAsFormInput(fullCourseName) : removeCourseFromFormInput(fullCourseName);
-        },
-        error: function (x, y, z) {
-            console.log(`ERROR : ${x} | ${y} | ${z}`);
         }
     });
 }
@@ -138,8 +134,7 @@ function addCourseAsFormInput(course) {
 
 function removeCourseFromFormInput(course) {
     // TODO : REMOVING THE FIELD BELOW AFTER CLICKING / UNSELECTING
-    console.log(`REMOVING ${course}`);
-    console.log(document.getElementById(course));
-    $(course).remove();
+    const courseInput = document.getElementById(course);
+    courseInput.parentNode.removeChild(courseInput);
 }
 
