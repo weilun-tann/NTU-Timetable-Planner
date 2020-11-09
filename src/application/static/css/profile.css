@@ -77,8 +77,8 @@ text {
     margin-top: 5px;
 }
 
-#tree-form{
-    top:-780px;
+#tree-form {
+    top: -780px;
     left: 1415px;
 }
 
@@ -86,17 +86,16 @@ text {
     position: relative;
     top: -6px;
     right: 930px;
-    border: #b2bec3 solid 5px;
-    border-radius: 5px;
-    color: #1a252f;
-    font-family: 'Open Sans', sans-serif;
-    font-size: 1.1em;
-    height: 30px;
+    background: #ededed;
+    border: #b2bec3 solid 1px;
+    border-radius: 3px;
+    color: #2d3436;
     margin: 10px 10px 30px 0;
+    max-height: 3ch;
+    max-width: 514px;
     padding: 0 10px 0 10px;
     text-align: center;
-    text-overflow: ellipsis;
-    width: 200px;
+    overflow: hidden;
 }
 
 .tree-form-input:hover {
