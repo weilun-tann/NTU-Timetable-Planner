@@ -101,6 +101,7 @@ def timetable(request: HttpRequest) -> HttpResponse:
     coursecodes = JSONParser.get_course_names()
     free_days = Planner.get_free_days(request.GET)
     courses = request.GET.getlist('course') or request.GET.getlist('course[]')
+    courses = list(set(courses))
     course_indexes = [L.split()[0] for L in courses]
     key = (tuple(free_days), tuple(course_indexes))
     combinations = timetable_cache.get(key) or Planner.generate_combis(course_indexes, free_days)
