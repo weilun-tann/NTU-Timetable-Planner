@@ -74,3 +74,7 @@ text {
 .container-fluid {
     color: white;
 }
+
+.hidden {
+    visibility: hidden;
+}

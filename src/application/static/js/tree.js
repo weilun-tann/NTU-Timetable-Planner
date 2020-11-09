@@ -92,7 +92,6 @@ names.enter().append("text")
 let selected = [];
 let allCircles = document.getElementsByTagName("circle");
 let index;
-let selectionDisplay = document.getElementById("selectedCoursesFromTree");
 let selectedCircles = [];
 
 for (let q = 0; q < allCircles.length; q++) {
@@ -112,7 +111,6 @@ for (let q = 0; q < allCircles.length; q++) {
             selectedCircle.style.fill = "#55efc4";
             changeFormInput(event.target.id, true);
         }
-        selectionDisplay.innerHTML = selected;
     });
 }
 
