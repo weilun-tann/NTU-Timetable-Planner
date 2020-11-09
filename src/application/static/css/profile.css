@@ -30,12 +30,6 @@ body {
     text-align: center;
 }
 
-
-.tree-div {
-    margin-top: 200px;
-    margin-left: 400px;
-}
-
 .canTake:hover {
     cursor: pointer;
     fill: #81ecec;
@@ -75,6 +69,43 @@ text {
     color: white;
 }
 
+.tree-div {
+    margin-top: 200px;
+    margin-left: 400px;
+}
+
+
 .hidden {
     visibility: hidden;
+}
+
+.btn {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-top: 30px;
+}
+
+.tree-form-input {
+    border: #b2bec3 solid 5px;
+    border-radius: 5px;
+    color: #1a252f;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1.1em;
+    font-weight: bold;
+    height: 50px;
+    margin: 10px 10px 30px 0;
+    padding: 0 10px 0 10px;
+    text-align: center;
+    text-overflow: ellipsis;
+    width: 300px;
+}
+
+.tree-form-input:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+}
+
+input {
+    user-select: none;
+    -moz-user-select: none;
 }

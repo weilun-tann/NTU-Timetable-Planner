@@ -127,7 +127,7 @@ function changeFormInput(courseCode, add) {
 }
 
 function addCourseAsFormInput(course) {
-    $("#tree-form").append(`<input id='${course}' name='course' value='${course}'>`);
+    $("#tree-form").append(`<input id='${course}' class='tree-form-input' name='course' value='${course}' readonly>`);
 }
 
 function removeCourseFromFormInput(course) {
@@ -135,4 +135,3 @@ function removeCourseFromFormInput(course) {
     const courseInput = document.getElementById(course);
     courseInput.parentNode.removeChild(courseInput);
 }
-
