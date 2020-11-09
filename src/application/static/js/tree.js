@@ -131,7 +131,6 @@ function addCourseAsFormInput(course) {
 }
 
 function removeCourseFromFormInput(course) {
-    // TODO : REMOVING THE FIELD BELOW AFTER CLICKING / UNSELECTING
     const courseInput = document.getElementById(course);
     courseInput.parentNode.removeChild(courseInput);
 }

@@ -30,6 +30,14 @@
         let taken = clearedClean.split(",");
         taken.push("Business Course");
 
+        // LOAD FREE DAYS INTO TREE-FORM BEFORE SUBMISSION
+        $('#tree-form').submit(function () {
+            const freeDayInputs = document.getElementsByClassName('free-day-checkbox');
+            console.log(`freeDayInputs.length : ${freeDayInputs.length}`);
+            for (let input of freeDayInputs) $("#tree-form").append(input);
+            return true;
+        });
+
     </script>
     <script src="{% static 'js/tree.js' %}"></script>
 

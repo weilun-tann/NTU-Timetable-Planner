@@ -57,11 +57,11 @@
     <form action={% url "loading" %}>
         <div class="free-day">
             <span class="free-day-prompt">YOUR FREE DAYS </span>
-            <label><input type='checkbox' name="MON"/> Mon </label>
-            <label><input type='checkbox' name="TUE"/> Tue</label>
-            <label><input type='checkbox' name="WED"/> Wed </label>
-            <label><input type='checkbox' name="THU"/> Thu </label>
-            <label><input type='checkbox' name="FRI"/> Fri </label>
+            <label><input class='free-day-checkbox' type='checkbox' name="MON"/> Mon </label>
+            <label><input class='free-day-checkbox' type='checkbox' name="TUE"/> Tue</label>
+            <label><input class='free-day-checkbox' type='checkbox' name="WED"/> Wed </label>
+            <label><input class='free-day-checkbox' type='checkbox' name="THU"/> Thu </label>
+            <label><input class='free-day-checkbox' type='checkbox' name="FRI"/> Fri </label>
         </div>
         <select data-multi-select-plugin name="course" id="courseselect" multiple>
             {% for coursecode, coursename in coursecodes.items %}

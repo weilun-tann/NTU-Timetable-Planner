@@ -55,7 +55,6 @@ class Planner:
 
             # CHECK IF WE CHOSE A FREE DAY
             if intervals[i - 1][0] in free_days or intervals[i][0] in free_days:
-                print('VIOLATION OF FREE DAYS!')
                 return True
 
             # CHECK IF THERE IS A CLASH IN TIMINGS
