@@ -69,20 +69,11 @@ text {
     color: white;
 }
 
-.tree-div {
-    margin-top: 200px;
-    margin-left: 400px;
-}
-
-
-.hidden {
-    visibility: hidden;
-}
 
 .btn {
     font-size: 1.5em;
     font-weight: bold;
-    margin-top: 30px;
+    margin-top: -30px;
 }
 
 .tree-form-input {
@@ -108,4 +99,10 @@ text {
 input {
     user-select: none;
     -moz-user-select: none;
+}
+
+svg {
+    position: relative;
+    left: 20%;
+    margin-top: 5%;
 }
