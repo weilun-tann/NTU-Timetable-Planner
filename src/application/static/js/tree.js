@@ -130,13 +130,10 @@ function changeFormInput(courseCode, add) {
 
 
 function addCourseAsFormInput(course) {
-    $("#tree-form").append(`<input id='${course}' class='tree-form-input' name='course' value='${course}' readonly>`);
     addToken(course);
 }
 
 function removeCourseFromFormInput(course) {
-    const courseInput = document.getElementById(course);
-    courseInput.parentNode.removeChild(courseInput);
     treeRemoveToken(course);
 }
 
