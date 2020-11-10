@@ -1,3 +1,5 @@
+
+
 let svg = d3.select("#tree")
     .attr("width", 1500).attr("height", 700)
     .append("g").attr("transform", "translate(0, 50)");
@@ -126,11 +128,16 @@ function changeFormInput(courseCode, add) {
     });
 }
 
+
 function addCourseAsFormInput(course) {
     $("#tree-form").append(`<input id='${course}' class='tree-form-input' name='course' value='${course}' readonly>`);
+    addToken(course);
 }
 
 function removeCourseFromFormInput(course) {
     const courseInput = document.getElementById(course);
     courseInput.parentNode.removeChild(courseInput);
+    treeRemoveToken(course);
 }
+
+

@@ -1,6 +1,6 @@
 // Initialize function, create initial tokens with itens that are already selected by the user
 function init(element) {
-    // Create div that wroaps all the elements inside (select, elements selected, search div) to put select inside
+    // Create div that wraps all the elements inside (select, elements selected, search div) to put select inside
     const wrapper = document.createElement("div");
     wrapper.addEventListener("click", clickOnWrapper);
     wrapper.classList.add("multi-select-component");
@@ -61,6 +61,14 @@ function createInitialTokens(select) {
     }
 }
 
+function addToken(select) {
+    const wrapper = document.getElementsByClassName('multi-select-component');
+    const courseselect = document.getElementById('courseselect');
+    const selected = courseselect.querySelector("[value=" + CSS.escape(select) + "]")
+    selected.setAttribute("selected", "");
+    createToken(wrapper.item(0), select);
+}
+
 
 // Listener of user search
 function inputChange(e) {
@@ -115,6 +123,7 @@ function createToken(wrapper, value) {
     // Create token wrapper
     const token = document.createElement("div");
     token.classList.add("selected-wrapper");
+    token.setAttribute("data-name", value);
     const token_span = document.createElement("span");
     token_span.classList.add("selected-label");
     token_span.innerText = value;
@@ -221,7 +230,6 @@ function selectOption(e) {
     const wrapper = e.target.parentNode.parentNode.parentNode;
     const input_search = wrapper.querySelector(".selected-input");
     const option = wrapper.querySelector(`select option[value="${e.target.dataset.value}"]`);
-
     option.setAttribute("selected", "");
     createToken(wrapper, e.target.dataset.value);
     if (input_search.value) {
@@ -302,6 +310,7 @@ function removeToken(e) {
     const dropdown = wrapper.querySelector(".dropdown-icon");
     // Get the options in the select to be unselected
     const option_to_unselect = wrapper.querySelector(`select option[value="${value_to_remove}"]`);
+    console.log(option_to_unselect);
     option_to_unselect.removeAttribute("selected");
     // Remove token attribute
     e.target.parentNode.remove();
@@ -310,6 +319,15 @@ function removeToken(e) {
     const event = new Event('click');
     dropdown.dispatchEvent(event);
     e.stopPropagation();
+}
+
+function treeRemoveToken(select) {
+    const wrapper = document.getElementsByClassName('multi-select-component').item(0);
+    //const value_to_remove = document.querySelectorAll('[data-option~=select]');
+    const value_to_remove = wrapper.querySelector("[data-name=" + CSS.escape(select) + "]");
+    const option_to_unselect = wrapper.querySelector(`select option[value="${value_to_remove.getAttribute('data-name')}"]`);
+    option_to_unselect.removeAttribute("selected");
+    value_to_remove.remove();
 }
 
 // Listen for 2 sequence of hits on the delete key, if this happens delete the last token if exist
@@ -341,34 +359,3 @@ function deletePressed(e) {
     return true;
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-
-    // get select that has the options available
-    const select = document.querySelectorAll("[data-multi-select-plugin]");
-    select.forEach(select => {
-
-        init(select);
-    });
-
-    // Dismiss on outside click
-    document.addEventListener('click', () => {
-        // get select that has the options available
-        const select = document.querySelectorAll("[data-multi-select-plugin]");
-        for (let i = 0; i < select.length; i++) {
-            if (event) {
-                var isClickInside = select[i].parentElement.parentElement.contains(event.target);
-
-                if (!isClickInside) {
-                    const wrapper = select[i].parentElement.parentElement;
-                    const dropdown = wrapper.querySelector(".dropdown-icon");
-                    const autocomplete_list = wrapper.querySelector(".autocomplete-list");
-                    //the click was outside the specifiedElement, do something
-                    dropdown.classList.remove("active");
-                    autocomplete_list.innerHTML = "";
-                    addPlaceholder(wrapper);
-                }
-            }
-        }
-    });
-
-});
