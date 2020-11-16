@@ -14,7 +14,7 @@ class JSONParser:
 
     @staticmethod
     def get_dict():
-        with open('../backend/data/2020_S1.json') as json_file:
+        with open('../backend/data/2020_S2.json') as json_file:
             return json.load(json_file)
 
     @staticmethod
