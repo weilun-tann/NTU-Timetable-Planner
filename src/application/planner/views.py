@@ -66,26 +66,26 @@ def profile(request: HttpRequest) -> HttpResponse:
     coursecodesfull = JSONParser.get_course_names()
     user = request.user
     cleared = user.courses_cleared.split(", ")
-    count = 0
-    delete = []
-    for key, values in prerequisite.items():
-        for a in coursecodes:
-            if a == key:
-                for c in cleared:
-                    for i in prerequisite[key]:
-                        if i == c:
-                            count = count + 1
-                            break
-                if count == len(prerequisite[key]):
-                    count = 0
-                else:
-                    delete.append(key)
-                    count = 0
-    for c in cleared:
-        delete.append(c)
-    for remove in delete:
-        if remove in coursecodes:
-            del coursecodes[remove]
+    # count = 0
+    # delete = []
+    # for key, values in prerequisite.items():
+    #     for a in coursecodes:
+    #         if a == key:
+    #             for c in cleared:
+    #                 for i in prerequisite[key]:
+    #                     if i == c:
+    #                         count = count + 1
+    #                         break
+    #             if count == len(prerequisite[key]):
+    #                 count = 0
+    #             else:
+    #                 delete.append(key)
+    #                 count = 0
+    # for c in cleared:
+    #     delete.append(c)
+    # for remove in delete:
+    #     if remove in coursecodes:
+    #         del coursecodes[remove]
 
     return render(request, 'profile.html',
                   {"user": user, "coursecodes": coursecodes, "coursecodesfull": coursecodesfull,
